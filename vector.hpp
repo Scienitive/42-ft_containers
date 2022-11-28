@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/11/27 21:17:26 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/11/28 19:37:40 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <memory>
 # include <limits>
 # include <stdexcept>
+# include "vector_iterator.hpp"
 
 namespace ft
 {
@@ -25,14 +26,16 @@ class vector
 {
 /* --------------- TYPEDEFS --------------- */
 public:
-	typedef T													value_type;
-	typedef Alloc												allocator_type;
-	typedef typename allocator_type::reference					reference;
-	typedef typename allocator_type::const_reference			const_reference;
-	typedef typename allocator_type::pointer					pointer;
-	typedef typename allocator_type::const_pointer				const_pointer;
-	typedef typename allocator_type::size_type					size_type;
-	typedef typename allocator_type::difference_type			difference_type;
+	typedef T														value_type;
+	typedef Alloc													allocator_type;
+	typedef typename allocator_type::reference						reference;
+	typedef typename allocator_type::const_reference				const_reference;
+	typedef typename allocator_type::pointer						pointer;
+	typedef typename allocator_type::const_pointer					const_pointer;
+	typedef typename allocator_type::size_type						size_type;
+	typedef typename allocator_type::difference_type				difference_type;
+	typedef vector_iterator<value_type, difference_type>			iterator;
+	typedef vector_iterator<const value_type, difference_type>		const_iterator;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
@@ -51,9 +54,11 @@ public:
 	vector(const vector &)
 	{
 	}
+
 	vector	&operator=(const vector &)
 	{
 	}
+
 	~vector()
 	{
 	}
@@ -145,6 +150,26 @@ public:
 	void	resize(size_type count, const value_type &value)
 	{
 		
+	}
+
+	iterator	begin()
+	{
+		return (iterator(m_Data));
+	}
+
+	const_iterator	begin() const
+	{
+		return (const_iterator(m_Data));
+	}
+
+	iterator	end()
+	{
+		return (iterator(m_Data + m_Size));
+	}
+
+	const_iterator	end() const
+	{
+		return (const_iterator(m_Data + m_Size));
 	}
 };
 
