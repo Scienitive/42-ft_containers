@@ -6,12 +6,15 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:52:19 by alyasar           #+#    #+#             */
-/*   Updated: 2022/11/28 19:37:25 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/11/28 19:44:22 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_ITERATOR_HPP
 # define VECTOR_ITERATOR_HPP
+
+namespace ft
+{
 
 template<typename T, typename Diff>
 class vector_iterator
@@ -117,11 +120,6 @@ public:
 		return (temp);
 	}
 
-	difference_type operator-(const vector_iterator &other)
-	{
-		return (m_Ptr - other.m_Ptr);
-	}
-
 	vector_iterator &operator+=(difference_type n)
 	{
 		m_Ptr += n;
@@ -222,6 +220,22 @@ operator+(typename vector_iterator<T, Diff>::difference_type n,
 	const vector_iterator<T, Diff> &it)
 {
 	return (vector_iterator<T, Diff>(it.base() + n));
+}
+
+template<typename T, typename Diff>
+typename vector_iterator<T, Diff>::difference_type
+operator-(const vector_iterator<T, Diff> &ItL, const vector_iterator<T, Diff> &ItR)
+{
+	return (ItL.base() - ItR.base());
+}
+
+template<typename T_L, typename T_R, typename Diff>
+typename vector_iterator<T_L, Diff>::difference_type
+operator-(const vector_iterator<T_L, Diff> &ItL, const vector_iterator<T_R, Diff> &ItR)
+{
+	return (ItL.base() - ItR.base());
+}
+
 }
 
 #endif
