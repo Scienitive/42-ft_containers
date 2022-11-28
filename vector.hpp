@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/11/28 19:37:40 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/11/28 21:28:35 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ public:
 	typedef typename allocator_type::const_pointer					const_pointer;
 	typedef typename allocator_type::size_type						size_type;
 	typedef typename allocator_type::difference_type				difference_type;
-	typedef vector_iterator<value_type, difference_type>			iterator;
-	typedef vector_iterator<const value_type, difference_type>		const_iterator;
+	typedef ft::vector_iterator<value_type, difference_type>			iterator;
+	typedef ft::vector_iterator<const value_type, difference_type>		const_iterator;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
@@ -80,6 +80,31 @@ private:
 
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
 public:
+	allocator_type	get_allocator() const
+	{
+		return (m_Allocator);
+	}
+
+	iterator	begin()
+	{
+		return (iterator(m_Data));
+	}
+
+	const_iterator	begin() const
+	{
+		return (const_iterator(m_Data));
+	}
+
+	iterator	end()
+	{
+		return (iterator(m_Data + m_Size));
+	}
+
+	const_iterator	end() const
+	{
+		return (const_iterator(m_Data + m_Size));
+	}
+
 	bool	empty() const
 	{
 		if (m_Size == 0)
@@ -125,7 +150,34 @@ public:
 
 	/* INSERT FUNCTION */
 
-	/* ERASE FUNCTION */
+	iterator	erase(iterator pos)
+	{
+		m_Allocator.destroy(&m_Data[begin() - pos]);
+
+		if (pos != end() - 1)
+		{
+			for(iterator it = pos + 1; it != end(); it++)
+				*(it - 1) = *it;
+		}
+		m_Size--;
+
+		return (pos);
+	}
+
+	iterator	erase(iterator first, iterator last) // BITMEDI
+	{
+		for (iterator it = first; it != last; it++)
+			m_Allocator.destroy(&m_Data[begin() - it]);
+
+		if (last != end() - 1)
+		{
+			for(iterator it = last + 1; it != end(); it++)
+				*(it - (last - first)) = *it;
+		}
+		m_Size -= last - first;
+
+		return (pos);
+	}
 
 	void	push_back(const value_type &value)
 	{
@@ -152,25 +204,7 @@ public:
 		
 	}
 
-	iterator	begin()
-	{
-		return (iterator(m_Data));
-	}
-
-	const_iterator	begin() const
-	{
-		return (const_iterator(m_Data));
-	}
-
-	iterator	end()
-	{
-		return (iterator(m_Data + m_Size));
-	}
-
-	const_iterator	end() const
-	{
-		return (const_iterator(m_Data + m_Size));
-	}
+	
 };
 
 }

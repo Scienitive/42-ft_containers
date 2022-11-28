@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 20:04:29 by alyasar           #+#    #+#             */
-/*   Updated: 2022/11/28 19:36:16 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/11/28 21:10:14 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int main()
 	a.push_back(20);
 	b.push_back(10);
 	b.push_back(20);
+	b.push_back(30);
+	b.push_back(40);
 	e.push_back(10);
 	e.push_back(20);
 
