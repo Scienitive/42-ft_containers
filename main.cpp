@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 20:04:29 by alyasar           #+#    #+#             */
-/*   Updated: 2022/11/28 21:10:14 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/11/29 18:10:48 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,9 @@ int main()
 	e.push_back(10);
 	e.push_back(20);
 
+
+	iter = b.begin() + 1;
+	std::copy(iter, b.end(), iter - 1);
 
 	for (iter = b.begin(); iter != b.end(); iter++)
 	{
