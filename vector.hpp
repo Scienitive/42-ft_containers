@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/11/28 21:28:35 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/11/29 19:27:27 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -152,31 +152,25 @@ public:
 
 	iterator	erase(iterator pos)
 	{
-		m_Allocator.destroy(&m_Data[begin() - pos]);
-
 		if (pos != end() - 1)
-		{
-			for(iterator it = pos + 1; it != end(); it++)
-				*(it - 1) = *it;
-		}
+			std::copy(pos + 1, end(), pos);
 		m_Size--;
+
+		m_Allocator.destroy(end().base());
 
 		return (pos);
 	}
 
-	iterator	erase(iterator first, iterator last) // BITMEDI
+	iterator	erase(iterator first, iterator last)
 	{
-		for (iterator it = first; it != last; it++)
-			m_Allocator.destroy(&m_Data[begin() - it]);
-
 		if (last != end() - 1)
-		{
-			for(iterator it = last + 1; it != end(); it++)
-				*(it - (last - first)) = *it;
-		}
+			std::copy(last, end(), first);
 		m_Size -= last - first;
 
-		return (pos);
+		for (difference_type i = 0; i < last - first; i++)
+			m_Allocator.destroy(end().base() + i);
+
+		return (first);
 	}
 
 	void	push_back(const value_type &value)

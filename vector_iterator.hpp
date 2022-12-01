@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:52:19 by alyasar           #+#    #+#             */
-/*   Updated: 2022/11/28 19:44:22 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/11/29 18:56:43 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,11 @@ class vector_iterator
 {
 /* --------------- TYPEDEFS --------------- */
 public:
-	typedef T								value_type;
-	typedef value_type &					reference;
-	typedef value_type *					pointer;
-	typedef Diff							difference_type;
+	typedef T									value_type;
+	typedef value_type &						reference;
+	typedef value_type *						pointer;
+	typedef Diff								difference_type;
+	typedef std::random_access_iterator_tag		iterator_category;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
