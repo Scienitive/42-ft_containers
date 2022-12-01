@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/01 14:07:16 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/01 14:22:35 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/01 15:00:11 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ struct enable_if
 };
 
 template<typename T>
-struct enable_if
+struct enable_if<true, T>
 {
 	typedef T	type;
 };
