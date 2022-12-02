@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:52:19 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/01 20:34:04 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/02 19:18:20 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,13 @@ public:
 	{
 	}
 
+	vector_iterator &operator=(const vector_iterator &it)
+	{
+		if (this != &it)
+			m_Ptr = it.m_Ptr;
+		return (*this);
+	}
+
 	~vector_iterator()
 	{
 	}
@@ -72,12 +79,6 @@ public:
 	operator vector_iterator<const T>(void) const
 	{
 		return(m_Ptr);
-	}
-
-	vector_iterator &operator=(const vector_iterator &it)
-	{
-		m_Ptr = it.m_Ptr;
-		return (*this);
 	}
 
 	vector_iterator &operator++(void)
@@ -120,14 +121,14 @@ public:
 		return (*m_Ptr);
 	}
 
-	vector_iterator operator+(difference_type n)
+	vector_iterator operator+(difference_type n) const
 	{
 		vector_iterator temp(m_Ptr + n);
 
 		return (temp);
 	}
 
-	vector_iterator operator-(difference_type n)
+	vector_iterator operator-(difference_type n) const
 	{
 		vector_iterator temp(m_Ptr - n);
 

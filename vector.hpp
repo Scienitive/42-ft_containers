@@ -6,22 +6,22 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/01 21:02:33 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/02 19:31:12 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# ifndef nullptr
+#  define nullptr NULL
+# endif
+
 # include <memory>
 # include <limits>
 # include <stdexcept>
 # include "vector_iterator.hpp"
 # include "type_traits.hpp"
-
-# ifndef nullptr
-#  define nullptr NULL
-# endif
 
 namespace ft
 {
@@ -41,6 +41,8 @@ public:
 	typedef typename allocator_type::difference_type			difference_type;
 	typedef ft::vector_iterator<value_type>						iterator;
 	typedef ft::vector_iterator<const value_type>				const_iterator;
+	typedef ft::reverse_iterator<iterator>						reverse_iterator;
+	typedef ft::reverse_iterator<const_iterator>				const_reverse_iterator;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
@@ -217,6 +219,16 @@ public:
 		return (const_iterator(m_Data));
 	}
 
+	reverse_iterator	rbegin()
+	{
+		return (reverse_iterator(end()));
+	}
+
+	const_reverse_iterator	rbegin() const
+	{
+		return (const_reverse_iterator(end()));
+	}
+
 	iterator	end()
 	{
 		return (iterator(m_Data + m_Size));
@@ -225,6 +237,16 @@ public:
 	const_iterator	end() const
 	{
 		return (const_iterator(m_Data + m_Size));
+	}
+
+	reverse_iterator	rend()
+	{
+		return (reverse_iterator(begin()));
+	}
+
+	const_reverse_iterator	rend() const
+	{
+		return (const_reverse_iterator(begin()));
 	}
 
 	bool	empty() const
