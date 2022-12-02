@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 20:04:29 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/02 19:24:15 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/03 00:49:14 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 #include <list>
 #include "vector.hpp"
 #include <iostream>
+#include <map>
 
 int main()
 {
