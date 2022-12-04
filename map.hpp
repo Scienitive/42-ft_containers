@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/04 21:04:52 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 01:08:46 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,12 @@ public:
 	typedef typename allocator_type::pointer					pointer;
 	typedef typename allocator_type::const_pointer				const_pointer;
 	typedef ft::bst_iterator<value_type, difference_type>		iterator;
-	typedef ft::binary_search_tree<value_type>					tree;
+	typedef ft::binary_search_tree<value_type, key_compare>		tree;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
-	tree	m_Data;
+	Compare		m_Compare;
+	tree		m_Data;
 
 /* --------------- MEMBER CLASSES --------------- */
 public:
@@ -73,13 +74,42 @@ public:
 /* --------------- CONSTRUCTORS AND DESTRUCTORS --------------- */
 public:
 	map()
+		:	m_Compare(Compare()), m_Data(tree())
 	{
+	}
+
+	explicit map(const key_compare &comp, const allocator_type &alloc = allocator_type())
+		:	m_Compare(comp), m_Data(tree(comp))
+	{
+	}
+
+	// BIR CONSTRUCTOR VAR
+
+	map(const map &other)
+		:	m_Compare(other.m_Compare), m_Data(other.m_Data)
+	{
+	}
+
+	map	&operator=(const map &other)
+	{
+		if (*this != other)
+		{
+			m_Compare = other.m_Compare;
+			m_Data = other.m_Data;
+		}
+		return (*this);
 	}
 
 	~map()
 	{
 	}
 
+/* --------------- PRIVATE MEMBER FUNCTIONS --------------- */
+private:
+	
+
+/* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
+public:
 	void	allah()
 	{
 		m_Data.add_node(ft::pair<int, std::string>(50, "50"));
@@ -92,6 +122,16 @@ public:
 	iterator begin()
 	{
 		return (iterator(m_Data.get_root()));
+	}
+
+	allocator_type	get_allocator() const // Bu çalışmazsa private attribute olarak alloc yap
+	{
+		return (allocator_type());
+	}
+
+	T	&at(const Key &key)
+	{
+		
 	}
 };
 

@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/04 20:59:58 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 00:41:46 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ struct bst_node
 	}
 };
 
-template<typename T, typename Alloc = std::allocator<T> >
+template<typename T, typename Compare, typename Alloc = std::allocator<T> >
 class binary_search_tree
 {
 /* --------------- TYPEDEFS --------------- */
@@ -75,18 +75,24 @@ public:
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
+	Compare			m_Compare;
 	node_pointer	m_Root_Node;
 	node_alloc		m_Node_Allocator;
 
 /* --------------- CONSTRUCTORS AND DESTRUCTOR --------------- */
 public:
 	binary_search_tree()
-		:	m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
+		:	m_Compare(Compare()), m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
+	{
+	}
+
+	explicit binary_search_tree(const Compare &comp)
+		:	m_Compare(comp), m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
 	{
 	}
 
 	binary_search_tree(const_reference value)
-		:	m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
+		:	m_Compare(Compare()), m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
 	{
 		add_node(value);
 	}
@@ -153,7 +159,7 @@ public:
 
 		while (true)
 		{
-			if (value < node->value)
+			if (m_Compare(value.first, node->value.first))
 			{
 				if (node->left == nullptr)
 				{
@@ -164,7 +170,7 @@ public:
 				else
 					node = node->left;
 			}
-			else if (value > node->value)
+			else
 			{
 				if (node->right == nullptr)
 				{
@@ -184,9 +190,9 @@ public:
 
 		while (node != nullptr && node->value != value)
 		{
-			if (value < node->value)
+			if (m_Compare(value.first, node->value.first))
 				node = node->left;
-			else if (value > node->value)
+			else
 				node = node->right;
 		}
 

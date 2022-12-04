@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:58:37 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/04 20:16:00 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 00:52:46 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,14 +82,14 @@ private:
 		}
 		else
 		{
-			value_type	start_value = m_Node->value;
-
-			while (m_Node != nullptr)
+			while (m_Node != nullptr && m_Node->parent != nullptr && m_Node->parent->left != m_Node)
 			{
 				m_Node = m_Node->parent;
-				if (m_Node->value > start_value)
-					break;
 			}
+			if (m_Node != nullptr && m_Node->parent != nullptr)
+				m_Node = m_Node->parent;
+			else
+				m_Node = nullptr;
 		}
 	}
 
@@ -106,14 +106,14 @@ private:
 		}
 		else
 		{
-			value_type	start_value = m_Node->value;
-
-			while (m_Node != nullptr)
+			while (m_Node != nullptr && m_Node->parent != nullptr && m_Node->parent->right != m_Node)
 			{
 				m_Node = m_Node->parent;
-				if (m_Node->value < start_value)
-					break;
 			}
+			if (m_Node != nullptr && m_Node->parent != nullptr)
+				m_Node = m_Node->parent;
+			else
+				m_Node = nullptr;
 		}
 	}
 
