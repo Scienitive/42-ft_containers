@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/04 15:45:11 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/04 21:07:31 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,53 +16,44 @@
 #include "vector.hpp"
 #include <iostream>
 #include <map>
+#include "map.hpp"
 
 int main()
 {
-	std::vector<int> a;
-	std::vector<int> t;
+	/*
+	std::map<int, std::string>	map;
 
-	ft::vector<int> b;
-	ft::vector<int> s;
+	map[1] = "asdasd";
+	map[3] = "asda";
+	map[2] = "rar";
+	map.emplace(1, "sada");
 
-	std::vector<int>::iterator it;
-	std::vector<int>::iterator it2;
+	std::map<int, std::string>::iterator it;
+	std::map<int, std::string>::const_iterator it2;
 
-	ft::vector<int>::iterator iter;
-	ft::vector<int>::iterator iter2;
 
-	std::vector<int>::reverse_iterator it3;
-	std::vector<int>::reverse_iterator it4;
+	for (it = map.begin(); it != map.end(); it++)
+		std::cout << it->second << std::endl;
+	it++;
+	if (it == it2)
+	{
 
-	ft::vector<int>::reverse_iterator iter3;
-	ft::vector<int>::reverse_iterator iter4;
+	}
+	std::cout << it->second << std::endl;
+	*/
 
-	a.push_back(10);
-	a.push_back(20);
-	a.push_back(30);
-	a.push_back(40);
-	a.push_back(50);
-	a.push_back(60);
-	a.push_back(70);
-	a.push_back(80);
+	ft::map<int, std::string>	map;
+	ft::map<int, std::string>::iterator it;
 
-	b.push_back(10);
-	b.push_back(20);
-	b.push_back(30);
-	b.push_back(40);
-	b.push_back(50);
-	b.push_back(60);
-	b.push_back(70);
-	b.push_back(80);
-
-	it3 = a.rbegin();
-	it4 = a.rend();
-
-	iter3 = b.rbegin();
-	iter4 = b.rend();
-
-	std::cout << *it3 << std::endl;
-	std::cout << *iter3 << std::endl;
-	std::cout << *(it4 - 1) << std::endl;
-	std::cout << *(iter4 - 1) << std::endl;
+	map.allah();
+	it = map.begin();
+	std::cout << it->first << std::endl;
+	it--;
+	std::cout << it->first << std::endl;
+	it++;
+	std::cout << it->first << std::endl;
+	it++;
+	std::cout << it->first << std::endl;
+	it++;
+	std::cout << it->first << std::endl;
 }

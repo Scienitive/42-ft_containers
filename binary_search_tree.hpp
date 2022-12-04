@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/04 15:43:54 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/04 20:59:58 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 
 # include <memory>
 # include <iostream>
+
+namespace ft
+{
 
 template<typename T>
 struct bst_node
@@ -248,6 +251,13 @@ public:
 	{
 		print_tree_helper(m_Root_Node, 0);
 	}
+
+	node_pointer	get_root(void) const
+	{
+		return (m_Root_Node);
+	}
 };
+
+}
 
 #endif
