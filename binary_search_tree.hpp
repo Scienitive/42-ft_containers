@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 00:41:46 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 23:00:15 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,18 @@ struct bst_node
 	bst_node	*right;
 	bst_node	*parent;
 
+	bool		is_smallest;
+	bool		is_biggest;
+	bool		is_end_node;
+
 /* --------------- CONSTRUCTORS --------------- */
 	bst_node()
-		:	left(nullptr), right(nullptr), parent(nullptr)
+		:	left(nullptr), right(nullptr), parent(nullptr), is_smallest(false), is_biggest(false), is_end_node(false)
 	{
 	}
 
 	bst_node(const value_type &val)
-		:	value(val), left(nullptr), right(nullptr), parent(nullptr)
+		:	value(val), left(nullptr), right(nullptr), parent(nullptr), is_smallest(false), is_biggest(false), is_end_node(false)
 	{
 	}
 
@@ -77,6 +81,7 @@ public:
 private:
 	Compare			m_Compare;
 	node_pointer	m_Root_Node;
+	node_pointer	m_End_Node;
 	node_alloc		m_Node_Allocator;
 
 /* --------------- CONSTRUCTORS AND DESTRUCTOR --------------- */
@@ -100,6 +105,7 @@ public:
 	~binary_search_tree()
 	{
 		delete_tree(m_Root_Node);
+		delete m_End_Node;
 	}
 
 /* --------------- PRIVATE MEMBER FUNCTIONS --------------- */
@@ -133,13 +139,90 @@ private:
 
 	void	delete_tree(node_pointer node)
 	{
-		if (node == nullptr)
+		if (is_node_empty(node))
 			return;
 
 		delete_tree(node->left);
 		delete_tree(node->right);
 
 		delete node;
+	}
+
+	void	end_node_connections(node_pointer node)
+	{
+		if (node->parent == nullptr)
+		{
+			node->is_biggest = true;
+			node->is_smallest = true;
+			node->left = m_End_Node;
+			node->right = m_End_Node;
+			m_End_Node->left = node;
+			m_End_Node->right = node;
+		}
+		else if (node->parent->is_smallest && node->parent->left == node)
+		{
+			node->parent->is_smallest = false;
+			node->is_smallest = true;
+			node->left = m_End_Node;
+			m_End_Node->right = node;
+		}
+		else if (node->parent->is_biggest && node->parent->right == node)
+		{
+			node->parent->is_biggest = false;
+			node->is_biggest = true;
+			node->right = m_End_Node;
+			m_End_Node->left = node;
+		}
+	}
+
+	node_pointer	find_biggest(void)
+	{
+		node_pointer node = m_Root_Node;
+
+		if (!is_node_empty(node))
+		{
+			while (!is_node_empty(node->right))
+				node = node->right;
+		}
+
+		return (node);
+	}
+
+	node_pointer	find_smallest(void)
+	{
+		node_pointer node = m_Root_Node;
+
+		if (!is_node_empty(node))
+		{
+			while (!is_node_empty(node->left))
+				node = node->left;
+		}
+
+		return (node);
+	}
+
+	void	del_end_node_connections(void)
+	{
+		node_pointer node_s = find_smallest();
+		node_pointer node_b = find_biggest();
+
+		if (!is_node_empty(node_s) && !node_s->is_smallest)
+		{
+			node_s->is_smallest = true;
+			node_s->left = m_End_Node;
+			m_End_Node->right = node_s;
+		}
+		if (!is_node_empty(node_b) && !node_b->is_biggest)
+		{
+			node_b->is_biggest = true;
+			node_b->right = m_End_Node;
+			m_End_Node->left = node_b;
+		}
+	}
+
+	bool	is_node_empty(node_pointer node)
+	{
+		return (node == nullptr || node->is_end_node);
 	}
 
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
@@ -151,7 +234,11 @@ public:
 
 		if (m_Root_Node == nullptr)
 		{
+			m_End_Node = m_Node_Allocator.allocate(1);
+			m_Node_Allocator.construct(m_End_Node, node_type());
+			m_End_Node->is_end_node = true;
 			m_Root_Node = allocated;
+			end_node_connections(m_Root_Node);
 			return;
 		}
 
@@ -161,7 +248,7 @@ public:
 		{
 			if (m_Compare(value.first, node->value.first))
 			{
-				if (node->left == nullptr)
+				if (is_node_empty(node->left))
 				{
 					node->left = allocated;
 					node->left->parent = node;
@@ -172,7 +259,7 @@ public:
 			}
 			else
 			{
-				if (node->right == nullptr)
+				if (is_node_empty(node->right))
 				{
 					node->right = allocated;
 					node->right->parent = node;
@@ -182,13 +269,14 @@ public:
 					node = node->right;
 			}
 		}
+		end_node_connections(allocated);
 	}
 
 	void	delete_node(const_reference value)
 	{
 		node_pointer node = m_Root_Node;
 
-		while (node != nullptr && node->value != value)
+		while (!is_node_empty(node) && node->value != value)
 		{
 			if (m_Compare(value.first, node->value.first))
 				node = node->left;
@@ -196,17 +284,18 @@ public:
 				node = node->right;
 		}
 
-		if (node == nullptr)
+		if (is_node_empty(node))
 			return;
 
 		delete_node(node);
+		del_end_node_connections();
 	}
 
 	void	delete_node(node_pointer node)
 	{
-		if (node != nullptr)
+		if (!is_node_empty(node))
 		{
-			if (node->left == nullptr && node->right == nullptr)
+			if (is_node_empty(node->left) && is_node_empty(node->right))
 			{
 				node_pointer	parent = node->parent;
 				bool			left_right; // left = true | right = false
@@ -224,7 +313,7 @@ public:
 				else if (parent != nullptr && !left_right)
 					parent->right = nullptr;
 			}
-			else if (node->left == nullptr && node->right != nullptr)
+			else if (is_node_empty(node->left) && !is_node_empty(node->right))
 			{
 				if (node->parent->left == node)
 					node->parent->left = node->right;
@@ -234,7 +323,7 @@ public:
 				m_Node_Allocator.destroy(node);
 				m_Node_Allocator.deallocate(node, 1);
 			}
-			else if (node->left != nullptr && node->right == nullptr)
+			else if (!is_node_empty(node->left) && is_node_empty(node->right))
 			{
 				if (node->parent->left == node)
 					node->parent->left = node->left;
@@ -261,6 +350,11 @@ public:
 	node_pointer	get_root(void) const
 	{
 		return (m_Root_Node);
+	}
+
+	node_pointer	get_end(void) const
+	{
+		return (m_End_Node);
 	}
 };
 

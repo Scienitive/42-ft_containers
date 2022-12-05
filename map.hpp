@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 01:08:46 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 23:07:15 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,11 @@ public:
 	typedef ft::bst_iterator<value_type, difference_type>		iterator;
 	typedef ft::binary_search_tree<value_type, key_compare>		tree;
 
-/* --------------- MEMBER ATTRIBUTES --------------- */
-private:
-	Compare		m_Compare;
-	tree		m_Data;
-
 /* --------------- MEMBER CLASSES --------------- */
 public:
 	class value_compare : public std::binary_function<value_type, value_type, bool>
 	{
-		//friend class map; BELKI TYPEDEFLER GEREKEBILIR
+		friend class map;
 
 	/* --------------- MEMBER OBJECTS --------------- */
 	protected:
@@ -70,6 +65,11 @@ public:
 			return (comp(lhs.first, rhs.first));
 		}
 	};
+
+/* --------------- MEMBER ATTRIBUTES --------------- */
+private:
+	value_compare	m_Compare;
+	tree			m_Data;
 
 /* --------------- CONSTRUCTORS AND DESTRUCTORS --------------- */
 public:
@@ -106,6 +106,7 @@ public:
 
 /* --------------- PRIVATE MEMBER FUNCTIONS --------------- */
 private:
+
 	
 
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
@@ -122,6 +123,11 @@ public:
 	iterator begin()
 	{
 		return (iterator(m_Data.get_root()));
+	}
+
+	iterator end()
+	{
+		return (iterator(m_Data.get_end()));
 	}
 
 	allocator_type	get_allocator() const // Bu çalışmazsa private attribute olarak alloc yap

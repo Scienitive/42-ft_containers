@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:58:37 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 00:52:46 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 23:09:14 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,20 @@ public:
 private:
 	void	bst_increment(void)
 	{
+		// End_Node için özel durumlar
 		// Eğer sağın varsa sağının en soluna git
 		// Yoksa parentina git o da parentina gitsin taa ki daha büyük valuelu bir şeyle karşılaşana kadar
 
+		if (m_Node->is_end_node)
+		{
+			m_Node = m_Node->right;
+			return;
+		}
 		if (m_Node->right != nullptr)
 		{
 			m_Node = m_Node->right;
+			if (m_Node->is_end_node)
+				return;
 			while (m_Node->left != nullptr)
 				m_Node = m_Node->left;
 		}
@@ -95,12 +103,20 @@ private:
 
 	void	bst_decrement(void)
 	{
+		// End_Node için özel durumlar
 		// Eğer solun varsa solunun en sağına git
 		// Yoksa parentina git o da parentina gitsin taa ki daha küçük valuelu bir şeyle karşılaşana kadar
 
+		if (m_Node->is_end_node)
+		{
+			m_Node = m_Node->left;
+			return;
+		}
 		if (m_Node->left != nullptr)
 		{
 			m_Node = m_Node->left;
+			if (m_Node->is_end_node)
+				return;
 			while (m_Node->right != nullptr)
 				m_Node = m_Node->right;
 		}
