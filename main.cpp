@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 23:34:06 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/06 01:36:22 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,15 +22,22 @@ int main()
 {
 	std::map<int, std::string>	stdmap;
 	std::map<int, std::string>::iterator stdit;
+	std::map<int, std::string>::const_iterator cstdit;
 
-	const ft::map<int, std::string>	map;
+	ft::map<int, std::string>	map;
 	ft::map<int, std::string>::iterator it;
+	ft::map<int, std::string>::const_iterator cit;
 
-	std::cout << map.at(70) << std::endl;
+	map.allah();
 
-	stdmap[40] = "40";
-	stdmap.at(40) = "zort";
-	std::cout << stdmap.at(40) << std::endl;
+	it = map.begin();
+	cit = map.begin();
+
+	std::cout << map.size() << std::endl;
+
+	//std::cout << map.size() << std::endl;
+
+	cstdit = stdmap.begin();
 
 	/*std::map<int, std::string>	map;
 

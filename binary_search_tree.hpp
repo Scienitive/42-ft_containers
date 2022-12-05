@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 23:40:25 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/06 01:15:06 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -228,7 +228,7 @@ private:
 		}
 	}
 
-	node_pointer	find_biggest(void)
+	node_pointer	find_biggest(void) const
 	{
 		node_pointer node = m_Root_Node;
 
@@ -241,7 +241,7 @@ private:
 		return (node);
 	}
 
-	node_pointer	find_smallest(void)
+	node_pointer	find_smallest(void) const
 	{
 		node_pointer node = m_Root_Node;
 
@@ -354,6 +354,11 @@ public:
 		return (m_Root_Node);
 	}
 
+	node_pointer	get_start(void) const
+	{
+		return (find_smallest());
+	}
+
 	node_pointer	get_end(void) const
 	{
 		return (m_End_Node);
@@ -413,6 +418,13 @@ public:
 					node = node->right;
 			}
 		}
+	}
+
+	bool	is_empty() const
+	{
+		if (m_Root_Node == nullptr)
+			return (true);
+		return (false);
 	}
 };
 

@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 23:33:25 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/06 01:29:44 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,11 @@ public:
 	typedef const value_type &														const_reference;
 	typedef typename allocator_type::pointer										pointer;
 	typedef typename allocator_type::const_pointer									const_pointer;
-	typedef ft::bst_iterator<value_type, difference_type>							iterator;
 	typedef ft::binary_search_tree<value_type, key_type, mapped_type, key_compare>	tree;
+	typedef ft::bst_iterator<value_type, difference_type>							iterator;
+	typedef ft::const_bst_iterator<value_type, difference_type>						const_iterator;
+	typedef ft::reverse_iterator<iterator>											reverse_iterator;
+	typedef ft::reverse_iterator<const_iterator>									const_reverse_iterator;
 
 /* --------------- MEMBER CLASSES --------------- */
 public:
@@ -120,16 +123,6 @@ public:
 		m_Data.add_node(ft::pair<int, std::string>(80, "80"));
 	}
 
-	iterator begin()
-	{
-		return (iterator(m_Data.get_root()));
-	}
-
-	iterator end()
-	{
-		return (iterator(m_Data.get_end()));
-	}
-
 	allocator_type	get_allocator() const // Bu çalışmazsa private attribute olarak alloc yap
 	{
 		return (allocator_type());
@@ -143,6 +136,61 @@ public:
 	const T	&at(const Key &key) const
 	{
 		return (m_Data.const_find(key));
+	}
+
+	iterator	begin()
+	{
+		return (iterator(m_Data.get_start()));
+	}
+
+	const_iterator	begin() const
+	{
+		return (const_iterator(m_Data.get_start()));
+	}
+
+	iterator	end()
+	{
+		return (iterator(m_Data.get_end()));
+	}
+
+	const_iterator	end() const
+	{
+		return (const_iterator(m_Data.get_end()));
+	}
+
+	reverse_iterator	rbegin()
+	{
+		return (reverse_iterator(end()));
+	}
+
+	const_reverse_iterator	rbegin() const
+	{
+		return (const_reverse_iterator(end()));
+	}
+
+	reverse_iterator	rend()
+	{
+		return (reverse_iterator(begin()));
+	}
+
+	const_reverse_iterator	rend() const
+	{
+		return (const_reverse_iterator(begin()));
+	}
+
+	bool	empty() const
+	{
+		return (m_Data.is_empty());
+	}
+
+	size_type	size() const
+	{
+		size_type size = 0;
+	
+		for (const_iterator it = begin(); it != end(); it++)
+			size++;
+
+		return (size);
 	}
 };
 
