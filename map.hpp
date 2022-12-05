@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 23:07:15 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 23:33:25 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,19 +27,19 @@ class map
 {
 /* --------------- TYPEDEFS --------------- */
 public:
-	typedef Key													key_type;
-	typedef T													mapped_type;
-	typedef typename ft::pair<const Key, T>						value_type;
-	typedef Compare												key_compare;
-	typedef Allocator											allocator_type;
-	typedef typename allocator_type::size_type					size_type;
-	typedef typename allocator_type::difference_type			difference_type;
-	typedef value_type &										reference;
-	typedef const value_type &									const_reference;
-	typedef typename allocator_type::pointer					pointer;
-	typedef typename allocator_type::const_pointer				const_pointer;
-	typedef ft::bst_iterator<value_type, difference_type>		iterator;
-	typedef ft::binary_search_tree<value_type, key_compare>		tree;
+	typedef Key																		key_type;
+	typedef T																		mapped_type;
+	typedef typename ft::pair<const Key, T>											value_type;
+	typedef Compare																	key_compare;
+	typedef Allocator																allocator_type;
+	typedef typename allocator_type::size_type										size_type;
+	typedef typename allocator_type::difference_type								difference_type;
+	typedef value_type &															reference;
+	typedef const value_type &														const_reference;
+	typedef typename allocator_type::pointer										pointer;
+	typedef typename allocator_type::const_pointer									const_pointer;
+	typedef ft::bst_iterator<value_type, difference_type>							iterator;
+	typedef ft::binary_search_tree<value_type, key_type, mapped_type, key_compare>	tree;
 
 /* --------------- MEMBER CLASSES --------------- */
 public:
@@ -137,7 +137,12 @@ public:
 
 	T	&at(const Key &key)
 	{
-		
+		return (m_Data.find(key));
+	}
+
+	const T	&at(const Key &key) const
+	{
+		return (m_Data.const_find(key));
 	}
 };
 

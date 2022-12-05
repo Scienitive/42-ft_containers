@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 23:00:15 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/05 23:40:25 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,12 +59,14 @@ struct bst_node
 	}
 };
 
-template<typename T, typename Compare, typename Alloc = std::allocator<T> >
+template<typename T, typename Key, typename Value, typename Compare, typename Alloc = std::allocator<T> >
 class binary_search_tree
 {
 /* --------------- TYPEDEFS --------------- */
 public:
 	typedef T											value_type;
+	typedef Key											key_type;
+	typedef Value										mapped_type;
 	typedef Alloc										allocator_type;
 	typedef value_type &								reference;
 	typedef const value_type &							const_reference;
@@ -135,6 +137,57 @@ private:
 		std::cout << root->value << "\n";
 
 		print_tree_helper(root->left, space);
+	}
+
+	void	delete_node(node_pointer node)
+	{
+		if (!is_node_empty(node))
+		{
+			if (is_node_empty(node->left) && is_node_empty(node->right))
+			{
+				node_pointer	parent = node->parent;
+				bool			left_right; // left = true | right = false
+
+				if (parent != nullptr && parent->left == node)
+					left_right = true;
+				else if (parent != nullptr && parent->right == node)
+					left_right = false;
+
+				m_Node_Allocator.destroy(node);
+				m_Node_Allocator.deallocate(node, 1);
+
+				if (parent != nullptr && left_right)
+					parent->left = nullptr;
+				else if (parent != nullptr && !left_right)
+					parent->right = nullptr;
+			}
+			else if (is_node_empty(node->left) && !is_node_empty(node->right))
+			{
+				if (node->parent->left == node)
+					node->parent->left = node->right;
+				else if (node->parent->right == node)
+					node->parent->right = node->right;
+
+				m_Node_Allocator.destroy(node);
+				m_Node_Allocator.deallocate(node, 1);
+			}
+			else if (!is_node_empty(node->left) && is_node_empty(node->right))
+			{
+				if (node->parent->left == node)
+					node->parent->left = node->left;
+				else if (node->parent->right == node)
+					node->parent->right = node->left;
+
+				m_Node_Allocator.destroy(node);
+				m_Node_Allocator.deallocate(node, 1);
+			}
+			else
+			{
+				node_pointer successor = find_successor(node);
+				node->value = successor->value;
+				delete_node(successor);
+			}	
+		}
 	}
 
 	void	delete_tree(node_pointer node)
@@ -220,7 +273,7 @@ private:
 		}
 	}
 
-	bool	is_node_empty(node_pointer node)
+	bool	is_node_empty(node_pointer node) const
 	{
 		return (node == nullptr || node->is_end_node);
 	}
@@ -291,57 +344,6 @@ public:
 		del_end_node_connections();
 	}
 
-	void	delete_node(node_pointer node)
-	{
-		if (!is_node_empty(node))
-		{
-			if (is_node_empty(node->left) && is_node_empty(node->right))
-			{
-				node_pointer	parent = node->parent;
-				bool			left_right; // left = true | right = false
-
-				if (parent != nullptr && parent->left == node)
-					left_right = true;
-				else if (parent != nullptr && parent->right == node)
-					left_right = false;
-
-				m_Node_Allocator.destroy(node);
-				m_Node_Allocator.deallocate(node, 1);
-
-				if (parent != nullptr && left_right)
-					parent->left = nullptr;
-				else if (parent != nullptr && !left_right)
-					parent->right = nullptr;
-			}
-			else if (is_node_empty(node->left) && !is_node_empty(node->right))
-			{
-				if (node->parent->left == node)
-					node->parent->left = node->right;
-				else if (node->parent->right == node)
-					node->parent->right = node->right;
-
-				m_Node_Allocator.destroy(node);
-				m_Node_Allocator.deallocate(node, 1);
-			}
-			else if (!is_node_empty(node->left) && is_node_empty(node->right))
-			{
-				if (node->parent->left == node)
-					node->parent->left = node->left;
-				else if (node->parent->right == node)
-					node->parent->right = node->left;
-
-				m_Node_Allocator.destroy(node);
-				m_Node_Allocator.deallocate(node, 1);
-			}
-			else
-			{
-				node_pointer successor = find_successor(node);
-				node->value = successor->value;
-				delete_node(successor);
-			}	
-		}
-	}
-
 	void	print_tree(void)
 	{
 		print_tree_helper(m_Root_Node, 0);
@@ -355,6 +357,62 @@ public:
 	node_pointer	get_end(void) const
 	{
 		return (m_End_Node);
+	}
+
+	mapped_type	&find(const Key &key)
+	{
+		node_pointer node = m_Root_Node;
+
+		if (is_node_empty(node))
+			throw std::out_of_range("Exception: Key not found.");
+
+		while (true)
+		{
+			if (key == node->value.first)
+				return (node->value.second);
+			if (m_Compare(key, node->value.first))
+			{
+				if (is_node_empty(node->left))
+					throw std::out_of_range("Exception: Key not found.");
+				else
+					node = node->left;
+			}
+			else
+			{
+				if (is_node_empty(node->right))
+					throw std::out_of_range("Exception: Key not found.");
+				else
+					node = node->right;
+			}
+		}
+	}
+
+	const mapped_type	&const_find(const Key &key) const
+	{
+		node_pointer node = m_Root_Node;
+
+		if (is_node_empty(node))
+			throw std::out_of_range("Exception: Key not found.");
+
+		while (true)
+		{
+			if (key == node->value.first)
+				return (node->value.second);
+			if (m_Compare(key, node->value.first))
+			{
+				if (is_node_empty(node->left))
+					throw std::out_of_range("Exception: Key not found.");
+				else
+					node = node->left;
+			}
+			else
+			{
+				if (is_node_empty(node->right))
+					throw std::out_of_range("Exception: Key not found.");
+				else
+					node = node->right;
+			}
+		}
 	}
 };
 
