@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/07 00:57:09 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 01:33:46 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,20 +84,21 @@ private:
 	Compare			m_Compare;
 	node_pointer	m_Root_Node;
 	node_pointer	m_End_Node;
+	allocator_type	m_Value_Allocator;
 	node_alloc		m_Node_Allocator;
 
 /* --------------- CONSTRUCTORS AND DESTRUCTOR --------------- */
 public:
 	binary_search_tree()
-		:	m_Compare(Compare()), m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
+		:	m_Compare(Compare()), m_Root_Node(nullptr), m_Value_Allocator(allocator_type()), m_Node_Allocator(node_alloc())
 	{
 		m_End_Node = m_Node_Allocator.allocate(1);
 		m_Node_Allocator.construct(m_End_Node, node_type());
 		m_End_Node->is_end_node = true;
 	}
 
-	explicit binary_search_tree(const Compare &comp)
-		:	m_Compare(comp), m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
+	explicit binary_search_tree(const Compare &comp, const allocator_type &alloc)
+		:	m_Compare(comp), m_Root_Node(nullptr), m_Value_Allocator(alloc), m_Node_Allocator(node_alloc())
 	{
 		m_End_Node = m_Node_Allocator.allocate(1);
 		m_Node_Allocator.construct(m_End_Node, node_type());
@@ -105,7 +106,7 @@ public:
 	}
 
 	binary_search_tree(const_reference value)
-		:	m_Compare(Compare()), m_Root_Node(nullptr), m_Node_Allocator(node_alloc())
+		:	m_Compare(Compare()), m_Root_Node(nullptr), m_Value_Allocator(allocator_type()), m_Node_Allocator(node_alloc())
 	{
 		m_End_Node = m_Node_Allocator.allocate(1);
 		m_Node_Allocator.construct(m_End_Node, node_type());
@@ -484,7 +485,7 @@ public:
 		delete_tree(m_Root_Node);
 	}
 
-	bool	does_node_exist(const value_type &value)
+	bool	does_node_exist(const value_type &value) const
 	{
 		node_pointer node = m_Root_Node;
 
@@ -512,7 +513,7 @@ public:
 		}
 	}
 
-	bool	does_node_exist(const Key &key)
+	bool	does_node_exist(const Key &key) const
 	{
 		node_pointer node = m_Root_Node;
 

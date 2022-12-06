@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 21:53:36 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/04 21:06:59 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 01:13:34 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ struct pair
 
 	pair &operator=(const pair &other)
 	{
-		if (this != other)
+		if (*this != other)
 		{
 			first = other.first;
 			second = other.second;

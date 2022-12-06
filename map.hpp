@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/07 00:56:32 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 01:56:50 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "pair.hpp"
 # include "binary_search_tree.hpp"
 # include "bst_iterator.hpp"
+# include "iterator.hpp"
 # include "utils.hpp"
 
 namespace ft
@@ -83,15 +84,21 @@ public:
 	}
 
 	explicit map(const key_compare &comp, const allocator_type &alloc = allocator_type())
-		:	m_Compare(comp), m_Data(tree(comp))
+		:	m_Compare(comp), m_Data(tree(comp, alloc))
 	{
 	}
 
-	// BIR CONSTRUCTOR VAR
+	template<class InputIt>
+	map(InputIt first, InputIt last, const Compare &comp = Compare(), const Allocator &alloc = Allocator())
+		:	m_Compare(comp), m_Data(tree(comp, alloc))
+	{
+		insert(first, last);
+	}
 
 	map(const map &other)
 		:	m_Compare(other.m_Compare), m_Data(other.m_Data)
 	{
+		std::cout << "Benim m_Data Adres: " << m_Data.get_root() << "\n otherin: " << other.m_Data.get_root() << std::endl;
 	}
 
 	map	&operator=(const map &other)
@@ -256,7 +263,7 @@ public:
 	ft::pair<iterator, iterator>	equal_range(const Key &key)
 	{
 		iterator it = m_Data.closest_upper(key);
-		if (it == end())
+		if (it == end() || (it == begin() && !m_Data.does_node_exist(key)))
 			return (ft::make_pair(it, it));
 		else
 			return (ft::make_pair(it, ++it));
@@ -265,7 +272,7 @@ public:
 	ft::pair<const_iterator, const_iterator>	equal_range(const Key &key) const
 	{
 		const_iterator it = m_Data.closest_upper(key);
-		if (it == end())
+		if (it == end() || (it == begin() && !m_Data.does_node_exist(key)))
 			return (ft::make_pair(it, it));
 		else
 			return (ft::make_pair(it, ++it));
@@ -284,7 +291,7 @@ public:
 	iterator	upper_bound(const Key &key)
 	{
 		iterator it = m_Data.closest_upper(key);
-		if (it == end())
+		if (it == end() || (it == begin() && !m_Data.does_node_exist(key)))
 			return (it);
 		else
 			return (++it);
@@ -293,7 +300,7 @@ public:
 	const_iterator	upper_bound(const Key &key) const
 	{
 		const_iterator it = m_Data.closest_upper(key);
-		if (it == end())
+		if (it == end() || (it == begin() && !m_Data.does_node_exist(key)))
 			return (it);
 		else
 			return (++it);
@@ -306,7 +313,7 @@ public:
 
 	value_compare	value_comp() const
 	{
-		return (value_comp(key_compare()));
+		return (value_compare(key_compare()));
 	}
 
 /* --------------- OPERATION OVERLOADS --------------- */
