@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/05 23:45:41 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 00:51:39 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@
 # include <stdexcept>
 # include "vector_iterator.hpp"
 # include "type_traits.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
@@ -429,17 +430,7 @@ bool	operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 template<typename T, typename Alloc>
 bool	operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 {
-	typename vector<T, Alloc>::const_iterator it_l = lhs.begin();
-	typename vector<T, Alloc>::const_iterator it_r = rhs.begin();
-
-	for (; (it_l != lhs.end()) && (it_r != rhs.end()); it_l++, it_r++)
-	{
-		if (*it_l < *it_r)
-			return (true);
-		if (*it_r < *it_l)
-			return (false);
-	}
-	return ((it_l == lhs.end()) && (it_r != rhs.end()));
+	return (ft::lexicographcial_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template<typename T, typename Alloc>

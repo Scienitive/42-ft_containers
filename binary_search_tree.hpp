@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/06 22:32:48 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 00:57:09 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -600,7 +600,7 @@ public:
 					while (!is_node_empty(node->parent) && node->parent->left != node)
 						node = node->parent;
 					if (is_node_empty(node->parent))
-						return (m_End_Node)
+						return (m_End_Node);
 					else
 						return (node->parent);
 				}

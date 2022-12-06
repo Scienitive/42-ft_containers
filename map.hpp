@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/07 00:24:50 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 00:56:32 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include "pair.hpp"
 # include "binary_search_tree.hpp"
 # include "bst_iterator.hpp"
+# include "utils.hpp"
 
 namespace ft
 {
@@ -314,6 +315,48 @@ public:
 		return (m_Data.add_node(ft::make_pair(key, mapped_type()))->value.second);
 	}
 };
+
+template<typename Key, typename T, typename Compare, typename Allocator>
+void	swap(map<Key, T, Compare, Allocator> &lhs, map<Key, T, Compare, Allocator> &rhs)
+{
+	lhs.swap(rhs);
+}
+
+template<typename Key, typename T, typename Compare, typename Allocator>
+bool	operator==(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
+{
+	return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+}
+
+template<typename Key, typename T, typename Compare, typename Allocator>
+bool	operator!=(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
+{
+	return (!(lhs == rhs));
+}
+
+template<typename Key, typename T, typename Compare, typename Allocator>
+bool	operator<(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
+{
+	return (ft::lexicographcial_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), Compare()));
+}
+
+template<typename Key, typename T, typename Compare, typename Allocator>
+bool	operator>(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
+{
+	return (rhs < lhs);
+}
+
+template<typename Key, typename T, typename Compare, typename Allocator>
+bool	operator<=(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
+{
+	return (!(rhs < lhs));
+}
+
+template<typename Key, typename T, typename Compare, typename Allocator>
+bool	operator>=(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
+{
+	return (!(lhs < rhs));
+}
 
 }
 

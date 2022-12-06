@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/06 22:02:16 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 00:31:10 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 int main()
 {
 	std::map<int, std::string>	stdmap;
+	std::map<int, std::string>	stdmap2;
 	std::map<int, std::string>::iterator stdit;
 	std::map<int, std::string>::const_iterator cstdit;
 
@@ -55,6 +56,11 @@ int main()
 	stdmap[45] = "45";
 	stdmap[80] = "80";
 
+	stdmap2[90] = "90";
+	if (stdmap < stdmap2)
+	{
+		
+	}
 
 	std::pair<std::map<int, std::string>::iterator, std::map<int, std::string>::iterator>	a;
 
