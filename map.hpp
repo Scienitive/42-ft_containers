@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/06 01:29:44 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/06 20:46:39 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,15 +114,6 @@ private:
 
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
 public:
-	void	allah()
-	{
-		m_Data.add_node(ft::pair<int, std::string>(50, "50"));
-		m_Data.add_node(ft::pair<int, std::string>(40, "40"));
-		m_Data.add_node(ft::pair<int, std::string>(60, "60"));
-		m_Data.add_node(ft::pair<int, std::string>(70, "70"));
-		m_Data.add_node(ft::pair<int, std::string>(80, "80"));
-	}
-
 	allocator_type	get_allocator() const // Bu çalışmazsa private attribute olarak alloc yap
 	{
 		return (allocator_type());
@@ -186,11 +177,75 @@ public:
 	size_type	size() const
 	{
 		size_type size = 0;
-	
+
 		for (const_iterator it = begin(); it != end(); it++)
 			size++;
 
 		return (size);
+	}
+
+	size_type	max_size() const
+	{
+		return (m_Data.max_size());
+	}
+
+	void	clear()
+	{
+		m_Data.clear();
+	}
+
+	ft::pair<iterator, bool>	insert(const value_type &value)
+	{
+		if (m_Data.does_node_exist(value))
+			return (ft::make_pair(iterator(m_Data.add_node(value)), false));
+		return (ft::make_pair(iterator(m_Data.add_node(value)), true));
+	}
+
+	iterator	insert(iterator pos, const value_type &value)
+	{
+		(void)pos;
+		return (iterator(m_Data.add_node(value)));
+	}
+
+	template<class InputIt>
+	void	insert(InputIt first, InputIt last)
+	{
+		for (; first != last; first++)
+			insert(*first);
+	}
+
+	void	erase(iterator pos)
+	{
+		m_Data.delete_node(pos.base());
+	}
+
+	void	erase(iterator first, iterator last) // Bu belki çalışmayabilir
+	{
+		for (iterator it = first; it != last; it++)
+			erase(it.base());
+	}
+
+	size_type	erase(const Key &key)
+	{
+		return (m_Data.delete_node(key));
+	}
+
+	void	swap(map &other)
+	{
+		m_Data.swap(other.m_Data);
+	}
+
+	size_type	count(const Key &key) const
+	{
+		if (m_Data.does_node_exist(value))
+			return (1);
+		return (0);
+	}
+
+/* --------------- OPERATION OVERLOADS --------------- */
+	T	&operator[](const Key &key)
+	{
+		return (m_Data.add_node(ft::make_pair(key, mapped_type()))->value.second);
 	}
 };
 
