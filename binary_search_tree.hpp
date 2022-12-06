@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/06 20:05:45 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/06 22:32:48 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -512,11 +512,102 @@ public:
 		}
 	}
 
+	bool	does_node_exist(const Key &key)
+	{
+		node_pointer node = m_Root_Node;
+
+		if (is_node_empty(node))
+			return (false);
+
+		while (true)
+		{
+			if (key == node->value.first)
+				return (true);
+			if (m_Compare(key, node->value.first))
+			{
+				if (is_node_empty(node->left))
+					return (false);
+				else
+					node = node->left;
+			}
+			else
+			{
+				if (is_node_empty(node->right))
+					return (false);
+				else
+					node = node->right;
+			}
+		}
+	}
+
+	node_pointer	findptr(const Key &key)
+	{
+		node_pointer node = m_Root_Node;
+
+		if (is_node_empty(node))
+			return (m_End_Node);
+
+		while (true)
+		{
+			if (key == node->value.first)
+				return (node);
+			if (m_Compare(key, node->value.first))
+			{
+				if (is_node_empty(node->left))
+					return (m_End_Node);
+				else
+					node = node->left;
+			}
+			else
+			{
+				if (is_node_empty(node->right))
+					return (m_End_Node);
+				else
+					node = node->right;
+			}
+		}
+	}
+
 	void	swap(binary_search_tree &other)
 	{
 		std::swap(m_Compare, other.m_Compare);
 		std::swap(m_Root_Node, other.m_Root_Node);
 		std::swap(m_End_Node, other.m_End_Node);
+	}
+
+	node_pointer	closest_upper(const Key &key) const
+	{
+		node_pointer node = m_Root_Node;
+
+		if (is_node_empty(node))
+			return (m_End_Node);
+
+		while (true)
+		{
+			if (key == node->value.first)
+				return (node);
+			if (m_Compare(key, node->value.first))
+			{
+				if (is_node_empty(node->left))
+					return (node);
+				else
+					node = node->left;
+			}
+			else
+			{
+				if (is_node_empty(node->right))
+				{
+					while (!is_node_empty(node->parent) && node->parent->left != node)
+						node = node->parent;
+					if (is_node_empty(node->parent))
+						return (m_End_Node)
+					else
+						return (node->parent);
+				}
+				else
+					node = node->right;
+			}
+		}
 	}
 };
 

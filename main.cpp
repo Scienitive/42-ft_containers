@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/06 18:47:31 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/06 22:02:16 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,9 +53,14 @@ int main()
 	stdmap[70] = "70";
 	stdmap[10] = "10";
 	stdmap[45] = "45";
-	bool a = stdmap.insert(std::make_pair(20, "20")).second;
+	stdmap[80] = "80";
 
-	std::cout << a << std::endl;
+
+	std::pair<std::map<int, std::string>::iterator, std::map<int, std::string>::iterator>	a;
+
+	a = stdmap.equal_range(79);
+
+	std::cout << "F: " << a.first->first << "\nS: " << a.second->first << std::endl; 
 
 	//stdmap.clear();
 

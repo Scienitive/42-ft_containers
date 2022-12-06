@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/06 20:46:39 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 00:24:50 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -237,9 +237,75 @@ public:
 
 	size_type	count(const Key &key) const
 	{
-		if (m_Data.does_node_exist(value))
+		if (m_Data.does_node_exist(key))
 			return (1);
 		return (0);
+	}
+
+	iterator	find(const Key &key)
+	{
+		return (iterator(m_Data.findptr(key)));
+	}
+
+	const_iterator	find(const Key &key) const
+	{
+		return (const_iterator(m_Data.findptr(key)));
+	}
+
+	ft::pair<iterator, iterator>	equal_range(const Key &key)
+	{
+		iterator it = m_Data.closest_upper(key);
+		if (it == end())
+			return (ft::make_pair(it, it));
+		else
+			return (ft::make_pair(it, ++it));
+	}
+
+	ft::pair<const_iterator, const_iterator>	equal_range(const Key &key) const
+	{
+		const_iterator it = m_Data.closest_upper(key);
+		if (it == end())
+			return (ft::make_pair(it, it));
+		else
+			return (ft::make_pair(it, ++it));
+	}
+
+	iterator	lower_bound(const Key &key)
+	{
+		return (iterator(m_Data.closest_upper(key)));
+	}
+
+	const_iterator	lower_bound(const Key &key) const
+	{
+		return (const_iterator(m_Data.closest_upper(key)));
+	}
+
+	iterator	upper_bound(const Key &key)
+	{
+		iterator it = m_Data.closest_upper(key);
+		if (it == end())
+			return (it);
+		else
+			return (++it);
+	}
+
+	const_iterator	upper_bound(const Key &key) const
+	{
+		const_iterator it = m_Data.closest_upper(key);
+		if (it == end())
+			return (it);
+		else
+			return (++it);
+	}
+
+	key_compare	key_comp() const
+	{
+		return (key_compare());
+	}
+
+	value_compare	value_comp() const
+	{
+		return (value_comp(key_compare()));
 	}
 
 /* --------------- OPERATION OVERLOADS --------------- */
