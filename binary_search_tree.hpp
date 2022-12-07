@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/07 01:33:46 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 20:07:36 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,11 @@ struct bst_node
 
 	bst_node(const value_type &val)
 		:	value(val), left(nullptr), right(nullptr), parent(nullptr), is_smallest(false), is_biggest(false), is_end_node(false)
+	{
+	}
+
+	bst_node(const value_type &val, const bst_node &other)
+		:	value(val), left(other.left), right(other.right), parent(other.parent), is_smallest(other.is_smallest), is_biggest(other.is_biggest), is_end_node(other.is_end_node)
 	{
 	}
 
@@ -123,7 +128,7 @@ public:
 
 /* --------------- PRIVATE MEMBER FUNCTIONS --------------- */
 private:
-	node_pointer	find_successor(node_pointer root)
+	node_pointer	find_successor(node_pointer root) const
 	{
 		node_pointer node = root->right;
 
@@ -135,7 +140,7 @@ private:
 
 	void	print_tree_helper(node_pointer root, int space)
 	{
-		if (root == nullptr)
+		if (is_node_empty(root))
 			return;
 
 		space += 5;
@@ -145,7 +150,7 @@ private:
 		std::cout << std::endl;
 		for (int i = 5; i < space; i++)
 			std::cout << " ";
-		std::cout << root->value << "\n";
+		std::cout << root->value.second << "\n";
 
 		print_tree_helper(root->left, space);
 	}
@@ -349,6 +354,12 @@ public:
 					left_right = true;
 				else if (parent != nullptr && parent->right == node)
 					left_right = false;
+				else
+				{
+					m_Root_Node = nullptr;
+					m_End_Node->left = m_End_Node;
+					m_End_Node->right = m_End_Node;
+				}
 
 				m_Node_Allocator.destroy(node);
 				m_Node_Allocator.deallocate(node, 1);
@@ -360,20 +371,48 @@ public:
 			}
 			else if (is_node_empty(node->left) && !is_node_empty(node->right))
 			{
-				if (node->parent->left == node)
-					node->parent->left = node->right;
-				else if (node->parent->right == node)
-					node->parent->right = node->right;
+				if (is_node_empty(node->parent))
+				{
+					m_Root_Node = node->right;
+					m_Root_Node->parent = nullptr;
+				}
+				else
+				{
+					if (node->parent->left == node)
+					{				
+						node->parent->left = node->right;
+						node->right->parent = node->parent;
+					}
+					else if (node->parent->right == node)
+					{
+						node->parent->right = node->right;
+						node->right->parent = node->parent;
+					}
+				}
 
 				m_Node_Allocator.destroy(node);
 				m_Node_Allocator.deallocate(node, 1);
 			}
 			else if (!is_node_empty(node->left) && is_node_empty(node->right))
 			{
-				if (node->parent->left == node)
-					node->parent->left = node->left;
-				else if (node->parent->right == node)
-					node->parent->right = node->left;
+				if (is_node_empty(node->parent))
+				{
+					m_Root_Node = node->left;
+					m_Root_Node->parent = nullptr;
+				}
+				else
+				{
+					if (node->parent->left == node)
+					{
+						node->parent->left = node->left;
+						node->left->parent = node->parent;
+					}
+					else if (node->parent->right == node)
+					{
+						node->parent->right = node->left;
+						node->left->parent = node->parent;
+					}
+				}
 
 				m_Node_Allocator.destroy(node);
 				m_Node_Allocator.deallocate(node, 1);
@@ -381,7 +420,26 @@ public:
 			else
 			{
 				node_pointer successor = find_successor(node);
-				node->value = successor->value;
+				node_pointer new_node = m_Node_Allocator.allocate(1);
+				m_Node_Allocator.construct(new_node, node_type(successor->value, *node));
+				if (!is_node_empty(node->parent))
+				{
+					if (node->parent->left == node)
+						node->parent->left = new_node;
+					else if (node->parent->right == node)
+						node->parent->right = new_node;
+				}
+				if (!is_node_empty(node->left))
+					node->left->parent = new_node;
+				if (!is_node_empty(node->right))
+					node->right->parent = new_node;
+
+				if (m_Root_Node == node)
+					m_Root_Node = new_node;
+
+				m_Node_Allocator.destroy(node);
+				m_Node_Allocator.deallocate(node, 1);
+				
 				delete_node(successor);
 			}	
 		}
@@ -541,7 +599,7 @@ public:
 		}
 	}
 
-	node_pointer	findptr(const Key &key)
+	node_pointer	findptr(const Key &key) const
 	{
 		node_pointer node = m_Root_Node;
 
@@ -609,6 +667,16 @@ public:
 					node = node->right;
 			}
 		}
+	}
+
+	void	clone(node_pointer node)
+	{
+		if (is_node_empty(node))
+			return;
+
+		add_node(node->value);
+		clone(node->left);
+		clone(node->right);
 	}
 };
 

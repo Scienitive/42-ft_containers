@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 22:11:23 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/07 01:56:50 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 20:11:34 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,17 +96,18 @@ public:
 	}
 
 	map(const map &other)
-		:	m_Compare(other.m_Compare), m_Data(other.m_Data)
+		:	m_Compare(other.m_Compare), m_Data(tree())
 	{
-		std::cout << "Benim m_Data Adres: " << m_Data.get_root() << "\n otherin: " << other.m_Data.get_root() << std::endl;
+		m_Data.clone(other.m_Data.get_root());
 	}
 
 	map	&operator=(const map &other)
 	{
 		if (*this != other)
 		{
+			clear();
 			m_Compare = other.m_Compare;
-			m_Data = other.m_Data;
+			m_Data.clone(other.m_Data.get_root());
 		}
 		return (*this);
 	}
@@ -122,6 +123,10 @@ private:
 
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
 public:
+	void	print_map() // BUNU SİL AGA
+	{
+		m_Data.print_tree();
+	}
 	allocator_type	get_allocator() const // Bu çalışmazsa private attribute olarak alloc yap
 	{
 		return (allocator_type());
@@ -224,14 +229,22 @@ public:
 
 	void	erase(iterator pos)
 	{
-		m_Data.delete_node(pos.base());
+		m_Data.delete_node(pos.base()->value.first);
 	}
 
-	void	erase(iterator first, iterator last) // Bu belki çalışmayabilir
-	{
-		for (iterator it = first; it != last; it++)
-			erase(it.base());
-	}
+	void    erase(iterator first, iterator last)
+    {
+        iterator it = first;
+        iterator next(it);
+        ++next;
+
+        while (it != last)
+        {
+            erase(it);
+            it = next;
+            ++next;
+        }
+    }
 
 	size_type	erase(const Key &key)
 	{
@@ -344,7 +357,7 @@ bool	operator!=(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Co
 template<typename Key, typename T, typename Compare, typename Allocator>
 bool	operator<(const map<Key, T, Compare, Allocator> &lhs, const map<Key, T, Compare, Allocator> &rhs)
 {
-	return (ft::lexicographcial_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end(), Compare()));
+	return (ft::lexicographcial_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template<typename Key, typename T, typename Compare, typename Allocator>

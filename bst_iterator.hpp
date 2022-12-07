@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:58:37 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/06 01:34:26 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/07 15:59:33 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ public:
 	{
 		bst_iterator temp = *this;
 		bst_increment();
-		return (*this);
+		return (temp);
 	}
 
 	bst_iterator	&operator--(void)
@@ -170,7 +170,7 @@ public:
 	{
 		bst_iterator temp = *this;
 		bst_decrement();
-		return (*this);
+		return (temp);
 	}
 
 	pointer	operator->(void) const
@@ -335,7 +335,7 @@ public:
 	{
 		const_bst_iterator temp = *this;
 		bst_increment();
-		return (*this);
+		return (temp);
 	}
 
 	const_bst_iterator	&operator--(void)
@@ -348,7 +348,7 @@ public:
 	{
 		const_bst_iterator temp = *this;
 		bst_decrement();
-		return (*this);
+		return (temp);
 	}
 
 	pointer	operator->(void) const
