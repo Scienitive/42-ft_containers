@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/07 18:34:18 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/08 23:35:45 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,21 +85,39 @@ int		main(void)
 
 int main()
 {
-	ft::map<const int, std::string> map;
+	ft::map<int, std::string> map;
+	std::map<int, std::string> smap;
+	std::list<int> list;
 
-	map[1] = "BBBBB";
-	map[4] = "EE";
-	map[-1] = "Hello";
-	map[10] = "Hi there";
+	ft::map<int, std::string>::iterator it;
+	std::map<int, std::string>::iterator sit;
+	std::list<int>::iterator lit;
+
+	map[5] = "5";
+	map[2] = "2";
+	map[10] = "10";
+
+	smap[5] = "5";
+	smap[2] = "2";
+	smap[10] = "10";
+
+	list.push_back(1);
+	list.push_back(2);
+
+	it = ++map.begin();
+	sit = ++smap.begin();
+	lit = list.begin();
 
 
-	map.erase(1);
+	map.erase(5);
+	smap.erase(5);
+	list.erase(list.begin());
 
-	map.print_map();
+	smap[7] = "7";
 
-	//std::cout << map.size() << std::endl;
-	for (auto it = map.begin(); it != map.end(); it++)
-		std::cout << it->second << std::endl;
+	std::cout << it->first << std::endl;
+	std::cout << sit->first << std::endl;
+	std::cout << *lit << std::endl;
 
-	//std::cout << map.begin()->first << std::endl;
 }
+
