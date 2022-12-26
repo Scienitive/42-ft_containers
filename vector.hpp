@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/07 00:51:39 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/26 18:54:42 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -185,11 +185,10 @@ public:
 
 		m_Size = count;
 
-		for (iterator it = begin(); it != end(); it++)
-			*it = value;
+		std::fill(begin(), end(), value);
 	}
 
-	// The reason why we use enable_if here is if we try to use the assign func above compiler can confuse it with the below one becuase InputIT is just a template and it can accept integral values
+	// The reason why we use enable_if here is if we try to use the assign func above compiler can confuse it with the above one becuase InputIT is just a template and it can accept integral values
 	template<typename InputIt>
 	void	assign(InputIt first, typename enable_if<!is_integral<InputIt>::value, InputIt>::type last)
 	{

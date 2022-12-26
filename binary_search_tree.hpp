@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/08 23:35:38 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/26 17:13:35 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,28 +30,28 @@ struct bst_node
 	typedef T		value_type;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
+	bool		is_smallest;
+	bool		is_biggest;
+	bool		is_end_node;
+
 	value_type	value;
 	bst_node	*left;
 	bst_node	*right;
 	bst_node	*parent;
 
-	bool		is_smallest;
-	bool		is_biggest;
-	bool		is_end_node;
-
 /* --------------- CONSTRUCTORS --------------- */
 	bst_node()
-		:	left(nullptr), right(nullptr), parent(nullptr), is_smallest(false), is_biggest(false), is_end_node(false)
+		:	is_smallest(false), is_biggest(false), is_end_node(false), left(nullptr), right(nullptr), parent(nullptr)
 	{
 	}
 
 	bst_node(const value_type &val)
-		:	value(val), left(nullptr), right(nullptr), parent(nullptr), is_smallest(false), is_biggest(false), is_end_node(false)
+		:	is_smallest(false), is_biggest(false), is_end_node(false), value(val), left(nullptr), right(nullptr), parent(nullptr)
 	{
 	}
 
 	bst_node(const value_type &val, const bst_node &other)
-		:	value(val), left(other.left), right(other.right), parent(other.parent), is_smallest(other.is_smallest), is_biggest(other.is_biggest), is_end_node(other.is_end_node)
+		:	is_smallest(other.is_smallest), is_biggest(other.is_biggest), is_end_node(other.is_end_node), value(val), left(other.left), right(other.right), parent(other.parent)
 	{
 	}
 
