@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/26 19:15:32 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/29 19:40:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -238,8 +238,54 @@ void vector_test()
 		std::cout << "\nconst_iterator and iterator is comparable.\n";
 }
 
+void	custom_test()
+{
+	ft::vector<int>		vector;
+	std::vector<int>	v;
+
+	int _ratio = 10000;
+
+    vector.assign(9900 * _ratio, 1);
+    vector.resize(5000 * _ratio);
+    vector.reserve(5000 * _ratio);
+    v.push_back(vector.size());
+    v.push_back(vector.capacity());
+    vector.resize(7000 * _ratio);
+    v.push_back(vector.size());
+    v.push_back(vector.capacity());
+    vector.resize(15300 * _ratio, int());
+    v.push_back(vector.size());
+    v.push_back(vector.capacity());
+    v.push_back(vector[65]);
+
+	for (auto it = v.begin(); it != v.end(); it++)
+		std::cout << *it << std::endl;
+
+	std::cout << std::endl;
+
+	std::vector<int>	vvector;
+	std::vector<int>	vv;
+
+	vvector.assign(9900 * _ratio, 1);
+    vvector.resize(5000 * _ratio);
+    vvector.reserve(5000 * _ratio);
+    vv.push_back(vvector.size());
+    vv.push_back(vvector.capacity());
+    vvector.resize(7000 * _ratio);
+    vv.push_back(vvector.size());
+    vv.push_back(vvector.capacity());
+    vvector.resize(15300 * _ratio, int());
+    vv.push_back(vvector.size());
+    vv.push_back(vvector.capacity());
+    vv.push_back(vvector[65]);
+
+	for (auto it = vv.begin(); it != vv.end(); it++)
+		std::cout << *it << std::endl;
+}
+
 int main()
 {
-	vector_test();
+	custom_test();
+	//vector_test();
 }
 

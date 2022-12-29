@@ -65,6 +65,9 @@
 		"variant": "cpp",
 		"*.ipp": "cpp",
 		"csignal": "cpp",
-		"codecvt": "cpp"
+		"codecvt": "cpp",
+		"compare": "cpp",
+		"concepts": "cpp",
+		"numbers": "cpp"
 	}
 }
