@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   binary_search_tree.hpp                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 00:46:30 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/26 17:13:35 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/29 19:18:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BINARY_SEARCH_TREE_HPP
 # define BINARY_SEARCH_TREE_HPP
 
+# include <cstddef> // BUNU EN SON SİL
 # ifndef nullptr
 #  define nullptr NULL
 # endif

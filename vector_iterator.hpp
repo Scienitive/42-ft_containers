@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   vector_iterator.hpp                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/28 16:52:19 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/04 20:04:15 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/29 17:13:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_ITERATOR_HPP
 # define VECTOR_ITERATOR_HPP
 
+# include <cstddef> // BUNU EN SON SİL
 # ifndef nullptr
 #  define nullptr NULL
 # endif

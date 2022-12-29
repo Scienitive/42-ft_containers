@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   vector.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/26 18:54:42 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/29 19:29:32 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
+# include <cstddef> // BUNU EN SON SİL
 # ifndef nullptr
 #  define nullptr NULL
 # endif
@@ -126,6 +127,18 @@ private:
 	{
 		if (size > max_size())
 			throw std::length_error("Exception: New capacity can't be higher than max_size.");
+	}
+
+	void	destroyFromEnd(pointer pos)
+	{
+		int	i = 0;
+
+		for (; pos != m_Data + m_Size; pos++)
+		{
+			m_Allocator.destroy(pos);
+			i++;
+		}
+		m_Size -= i;
 	}
 
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
@@ -377,14 +390,15 @@ public:
 
 	void	resize(size_type count, value_type value = value_type())
 	{
-		if (count > m_Size)
+		size_type len = size();
+		if (count > len)
 		{
 			reserve(count);
-			for (size_type i = m_Size; i < count; i++)
+			for (; len < count; len++)
 				push_back(value);
 		}
-		else if (count < m_Size)
-			erase(begin() + count, end());
+		else if (count < len)
+			destroyFromEnd(m_Data + count);
 	}
 
 	void	swap(vector &other)

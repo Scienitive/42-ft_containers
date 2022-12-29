@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   bst_iterator.hpp                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:58:37 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/08 23:35:30 by alyasar          ###   ########.fr       */
+/*   Updated: 2022/12/29 17:13:17 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef BST_ITERATOR_HPP
 # define BST_ITERATOR_HPP
 
+# include <cstddef> // BUNU EN SON SİL
 # ifndef nullptr
 #  define nullptr NULL
 # endif
