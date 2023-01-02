@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 21:52:44 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 22:04:04 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -409,7 +409,7 @@ public:
 		std::copy(first, last, m_Data + dist);*/
 
 		size_type start = pos - begin();
-		size_type count = static_cast<size_type>(last - first);
+		size_type count = std::distance(first, last);
 		if (m_Size + count > m_Capacity)
 		{
 			size_type new_cap = calculate_growth(count);
