@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 22:04:04 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 22:11:55 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,15 @@ public:
 	vector(InputIt first, typename enable_if<!is_integral<InputIt>::value, InputIt>::type last, const Alloc &alloc = Alloc())
 		:	m_Capacity(0), m_Data(nullptr), m_Size(0), m_Allocator(alloc)
 	{
-		m_Data = m_Allocator.allocate(m_Capacity);
+		/*m_Data = m_Allocator.allocate(m_Capacity);
 		for (; first != last; first++)
-			push_back(*first);
+			push_back(*first);*/
+
+		m_Size = std::distance(first, last);
+		m_Capacity = m_Size;
+		m_Data = m_Allocator.allocate(m_Capacity);
+		for (size_type i = ; i < m_Size; i++)
+			m_Allocator.construct(&m_Data[i], *(first + i));
 	}
 
 	vector	&operator=(const vector &rhs)
