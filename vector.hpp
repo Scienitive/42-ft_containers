@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 18:02:54 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 18:06:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -396,7 +396,7 @@ public:
 				deAllocate();
 				m_Data = new_start;
 				m_Size = new_m_size;
-				m_Capacity = new_start + new_size;
+				m_Capacity = new_size;
 			}
 		}
 	}
