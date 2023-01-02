@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 20:00:36 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 20:39:31 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,23 +349,14 @@ public:
 	}
 
 	void	insert(iterator pos, size_type count, const value_type &value)
-	{
-		/*if (count <= 0) {return;}
-
-		size_type dist = pos - begin();
-		size_type old_size = m_Size;
-
-		resize(m_Size + count);
-		std::copy_backward(m_Data + dist, m_Data + old_size, m_Data + old_size + count);
-		std::fill(m_Data + dist, m_Data + dist + count, value);*/
-		
+	{	
 		pointer _end = m_Data + m_Size;
 
 		if (count != 0)
 		{
 			if (m_Capacity - m_Size >= count)
 			{
-				const size_type elems_after = end() - pos;
+				size_type elems_after = end() - pos;
 				pointer old_end = _end;
 
 				if (elems_after > count)
@@ -383,12 +374,11 @@ public:
 			}
 			else
 			{
-				const size_type new_cap = calculate_growth(count);
+				size_type new_cap = calculate_growth(count);
 				pointer new_start = m_Allocator.allocate(new_cap);
 				size_type new_size = 0;
 
 				constructRange(new_start, m_Data, pos.base(), new_size);
-				std::cout << new_size << std::endl;
 				constructRange(new_start + new_size, new_start + new_size + count, value, new_size);
 				constructRange(new_start + new_size, pos.base(), _end, new_size);
 
@@ -403,7 +393,7 @@ public:
 	template<class InputIt>
 	void	insert(iterator pos, InputIt first, typename enable_if<!is_integral<InputIt>::value, InputIt>::type last)
 	{
-		if (first == last)
+		/*if (first == last)
 			return;
 		else if (static_cast<size_type>(std::distance(first, last)) <= 0)
 			throw std::length_error("Exception: Range is not valid.");
@@ -414,7 +404,39 @@ public:
 
 		resize(m_Size + range);
 		std::copy_backward(m_Data + dist, m_Data + old_size, m_Data + old_size + range);
-		std::copy(first, last, m_Data + dist);
+		std::copy(first, last, m_Data + dist);*/
+
+		size_type start = pos - begin();
+		size_type count = static_cast<size_type>(last - first);
+		if (m_Size + count > m_Capacity)
+		{
+			size_type new_cap = calculate_growth(count);
+			pointer new_start = m_Allocator.allocate(new_cap);
+			std::uninitialized_copy(begin(), pos, iterator(new_start));
+			for (size_type i = 0; i < count; i++, first++)
+				m_Allocator.construct(new_start + start + i, *first);
+			std::uninitialized_copy(pos, end(), iterator(new_start + start + count));
+			for(size_type i = 0; i < m_Size; i++)
+				m_Allocator.destroy(m_Data + i);
+			m_Allocator.deallocate(m_Data, m_Capacity);
+			m_Size += count;
+			m_Capacity = new_cap;
+			m_Data = new_start;
+		}
+		else
+		{
+			for (size_type i = m_Size; i > start; i--)
+			{
+				m_Allocator.destroy(m_Data + i + count - 1);
+				m_Allocator.construct(m_Data + i + count - 1, *(m_Data + i - 1));
+			}
+			for (size_type i = 0; i < count; i++, first++)
+			{
+				m_Allocator.destroy(m_Data + i + count);
+				m_Allocator.construct(m_Data + start + i, *first);
+			}
+			m_Size += count;
+		}
 	}
 
 	iterator	erase(iterator pos)
