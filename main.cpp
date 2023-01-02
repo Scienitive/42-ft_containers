@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 21:21:24 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 21:29:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -311,10 +311,7 @@ void	custom_test()
 
 int main()
 {
-	ft::vector<int> ttmp(500 * 10000, 5);
-
-	std::cout << ttmp.capacity() << std::endl;
-	//custom_test();
+	custom_test();
 	//vector_test();
 }
 
