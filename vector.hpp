@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 21:33:00 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 21:52:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -569,6 +569,15 @@ bool	operator>=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 	return (!(lhs < rhs));
 }
 
+}
+
+namespace std
+{
+	template<typename T, typename Alloc>
+	void	swap(ft::vector<T, Alloc> &lhs, ft::vector<T, Alloc> &rhs)
+	{
+		lhs.swap(rhs);
+	}
 }
 
 #endif
