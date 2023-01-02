@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 17:58:00 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 18:02:54 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,15 @@ private:
 		for (; start != end; dest++, (void)start++)
 		{
 			m_Allocator.construct(dest, *start);
+			size++;
+		}
+	}
+
+	void	constructRange(pointer dest, pointer end, const_reference value, size_type &size)
+	{
+		for (; dest != end; dest++)
+		{
+			m_Allocator.construct(dest, value);
 			size++;
 		}
 	}
