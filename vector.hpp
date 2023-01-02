@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 17:54:58 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 17:58:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -352,25 +352,25 @@ public:
 		std::copy_backward(m_Data + dist, m_Data + old_size, m_Data + old_size + count);
 		std::fill(m_Data + dist, m_Data + dist + count, value);*/
 		
-		pointer end = m_Data + m_Size;
+		pointer _end = m_Data + m_Size;
 
 		if (count != 0)
 		{
 			if (m_Capacity - m_Size >= count)
 			{
 				const size_type elems_after = end() - pos;
-				pointer old_end = end;
+				pointer old_end = _end;
 
 				if (elems_after > count)
 				{
-					constructRange(end, end - count, end, m_Size);
+					constructRange(_end, _end - count, _end, m_Size);
 					std::copy_backward(pos.base(), old_end - count, old_end);
 					std::fill_n(pos, count, value);
 				}
 				else
 				{
-					constructRange(end, end + (count - elems_after), value, m_Size);
-					constructRange(end, pos.base(), old_end, m_Size);
+					constructRange(_end, _end + (count - elems_after), value, m_Size);
+					constructRange(_end, pos.base(), old_end, m_Size);
 					std::fill(pos.base(), old_end, value);
 				}
 			}
@@ -382,7 +382,7 @@ public:
 
 				constructRange(new_start, m_Data, pos.base(), new_m_size);
 				constructRange(new_start + m_Size, new_start + m_Size + count, value, new_m_size);
-				constructRange(new_start + m_Size, pos.base(), end, new_m_size);
+				constructRange(new_start + m_Size, pos.base(), _end, new_m_size);
 
 				deAllocate();
 				m_Data = new_start;
