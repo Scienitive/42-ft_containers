@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 20:39:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 20:47:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -413,8 +413,18 @@ public:
 			size_type new_cap = calculate_growth(count);
 			pointer new_start = m_Allocator.allocate(new_cap);
 			std::uninitialized_copy(begin(), pos, iterator(new_start));
-			for (size_type i = 0; i < count; i++, first++)
-				m_Allocator.construct(new_start + start + i, *first);
+			try
+			{
+				for (size_type i = 0; i < count; i++, first++)
+					m_Allocator.construct(new_start + start + i, *first);
+			}
+			catch (...)
+			{
+				for (size_type i = 0; i < count + start; i++)
+					m_Allocator.destroy(new_start + i);
+				m_Allocator.deallocate(new_start, new_cap);
+				throw;
+			}
 			std::uninitialized_copy(pos, end(), iterator(new_start + start + count));
 			for(size_type i = 0; i < m_Size; i++)
 				m_Allocator.destroy(m_Data + i);
