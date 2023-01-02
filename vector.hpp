@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/29 19:29:32 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 17:46:24 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,15 @@ private:
 			m_Allocator.construct(&dest[i], src[i]);
 	}
 
+	void	constructRange(pointer dest, It start, It end, size_type &size)
+	{
+		for (; start != end; dest++, (void)start++)
+		{
+			m_Allocator.construct(dest, *start);
+			size++;
+		}
+	}
+
 	void	deAllocate()
 	{
 		for (size_type i = 0; i < m_Size; i++)
@@ -139,6 +148,21 @@ private:
 			i++;
 		}
 		m_Size -= i;
+	}
+
+	size_type calculate_growth(size_type extra) const
+	{
+		const size_type max = max_size();
+		const size_type cap = capacity();
+		if (max - cap < extra)
+			throw std::length_error("Exception.");
+
+		// kapasite max / 2 den buyukse cap * 2 maxi gecicegi icin max i donduruyorum
+		if (cap >= max / 2) {
+			return max;
+		}
+
+		return std::max(size() + extra, cap * 2);
 	}
 
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
@@ -318,14 +342,53 @@ public:
 
 	void	insert(iterator pos, size_type count, const value_type &value)
 	{
-		if (count <= 0) {return;}
+		/*if (count <= 0) {return;}
 
 		size_type dist = pos - begin();
 		size_type old_size = m_Size;
 
 		resize(m_Size + count);
 		std::copy_backward(m_Data + dist, m_Data + old_size, m_Data + old_size + count);
-		std::fill(m_Data + dist, m_Data + dist + count, value);
+		std::fill(m_Data + dist, m_Data + dist + count, value);*/
+		
+		pointer end = m_Data + m_Size;
+
+		if (count != 0)
+		{
+			if (m_Capacity - m_Size >= count)
+			{
+				const size_type elems_after = end() - pos;
+				pointer old_end = end;
+
+				if (elems_after > count)
+				{
+					constructRange(end, end - count, end, m_Size);
+					std::copy_backward(pos.base(), old_end - count, old_end);
+					std::fill_n(pos, count, value);
+				}
+				else
+				{
+					constructRange(end, end + (count - elems_after), value, m_Size);
+					constructRange(end, pos.base(), old_end, m_Size);
+					std::fill(pos.base(), old_end, value);
+				}
+			}
+			else
+			{
+				const size_type new_size = calculate_growth(count);
+				pointer new_start = m_Allocator.allocate(new_size);
+				size_type new_m_size = 0;
+
+				constructRange(new_start, m_Data, pos.base(), new_m_size);
+				constructRange(new_start + m_Size, new_start + m_Size + count, value, new_m_size);
+				constructRange(new_start + m_Size, pos.base(), end, new_m_size);
+
+				deAllocate();
+				m_Data = new_start;
+				m_Size = new_m_size;
+				m_Capacity = new_start + new_size;
+			}
+		}
 	}
 
 	template<class InputIt>
