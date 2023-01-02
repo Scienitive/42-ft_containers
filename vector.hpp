@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 20:50:56 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 20:57:19 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -451,13 +451,23 @@ public:
 
 	iterator	erase(iterator pos)
 	{
-		if (pos != end() - 1)
+		/*if (pos + 1 != end())
 			std::copy(pos + 1, end(), pos);
 		m_Size--;
 
 		m_Allocator.destroy(end().base());
 
-		return (pos);
+		return (pos);*/
+
+		size_type dist = pos - begin();
+		for (size_type i = dist; i < m_Size - 1; i++)
+		{
+			m_Allocator.destroy(m_Data + i);
+			m_Allocator.construct(m_Data + i, *(m_Data + i + 1));
+		}
+		m_Size--;
+		m_Allocator.destroy(m_Data + m_Size - 1);
+		return (iterator(m_Data + dist));
 	}
 
 	iterator	erase(iterator first, iterator last)
