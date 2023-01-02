@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 18:06:15 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 18:08:48 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -342,10 +342,7 @@ public:
 	{
 		size_type dist = pos - begin();
 
-		if (pos == end())
-			push_back(value);
-		else
-			insert(pos, 1, value);
+		insert(pos, 1, value);
 
 		return (iterator(m_Data + dist));
 	}
