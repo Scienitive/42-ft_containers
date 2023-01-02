@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 21:03:28 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 21:23:45 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,8 +82,9 @@ public:
 		sizeCheck(count);
 
 		m_Data = m_Allocator.allocate(count);
-		for (size_type i = 0; i < count; i++)
-			push_back(value);
+		m_Size = count;
+		m_Capacity = count;
+		constructRange(m_Data, m_Data + m_Size, value);
 	}
 
 	template<class InputIt>
