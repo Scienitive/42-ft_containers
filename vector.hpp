@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 20:47:19 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 20:50:56 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -496,11 +496,7 @@ public:
 	{
 		size_type len = size();
 		if (count > len)
-		{
-			reserve(count);
-			for (; len < count; len++)
-				push_back(value);
-		}
+			insert(end(), count - len, value);
 		else if (count < len)
 			destroyFromEnd(m_Data + count);
 	}
