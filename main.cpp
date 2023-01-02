@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/29 19:40:59 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 18:18:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -245,18 +245,10 @@ void	custom_test()
 
 	int _ratio = 10000;
 
-    vector.assign(9900 * _ratio, 1);
-    vector.resize(5000 * _ratio);
-    vector.reserve(5000 * _ratio);
+    vector.assign(2600 * _ratio, 1);
+    v.push_back(*(vector.insert(vector.end() - 800 * _ratio, 44)));
     v.push_back(vector.size());
     v.push_back(vector.capacity());
-    vector.resize(7000 * _ratio);
-    v.push_back(vector.size());
-    v.push_back(vector.capacity());
-    vector.resize(15300 * _ratio, int());
-    v.push_back(vector.size());
-    v.push_back(vector.capacity());
-    v.push_back(vector[65]);
 
 	for (auto it = v.begin(); it != v.end(); it++)
 		std::cout << *it << std::endl;
@@ -266,18 +258,10 @@ void	custom_test()
 	std::vector<int>	vvector;
 	std::vector<int>	vv;
 
-	vvector.assign(9900 * _ratio, 1);
-    vvector.resize(5000 * _ratio);
-    vvector.reserve(5000 * _ratio);
+	vvector.assign(2600 * _ratio, 1);
+    vv.push_back(*(vvector.insert(vvector.end() - 800 * _ratio, 44)));
     vv.push_back(vvector.size());
     vv.push_back(vvector.capacity());
-    vvector.resize(7000 * _ratio);
-    vv.push_back(vvector.size());
-    vv.push_back(vvector.capacity());
-    vvector.resize(15300 * _ratio, int());
-    vv.push_back(vvector.size());
-    vv.push_back(vvector.capacity());
-    vv.push_back(vvector[65]);
 
 	for (auto it = vv.begin(); it != vv.end(); it++)
 		std::cout << *it << std::endl;
@@ -285,7 +269,13 @@ void	custom_test()
 
 int main()
 {
-	custom_test();
+	ft::vector<int> vector;
+
+	vector.assign(10, 1);
+	vector.insert(vector.begin() + 4, 2);
+	for (auto it = vector.begin(); it != vector.end(); it++)
+		std::cout << *it << std::endl;
+	//custom_test();
 	//vector_test();
 }
 

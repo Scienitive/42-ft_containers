@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 18:08:48 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 20:00:36 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define VECTOR_HPP
 
 # include <cstddef> // BUNU EN SON SİL
+# include <iostream> // BUNU DA
 # ifndef nullptr
 #  define nullptr NULL
 # endif
@@ -382,18 +383,19 @@ public:
 			}
 			else
 			{
-				const size_type new_size = calculate_growth(count);
-				pointer new_start = m_Allocator.allocate(new_size);
-				size_type new_m_size = 0;
+				const size_type new_cap = calculate_growth(count);
+				pointer new_start = m_Allocator.allocate(new_cap);
+				size_type new_size = 0;
 
-				constructRange(new_start, m_Data, pos.base(), new_m_size);
-				constructRange(new_start + m_Size, new_start + m_Size + count, value, new_m_size);
-				constructRange(new_start + m_Size, pos.base(), _end, new_m_size);
+				constructRange(new_start, m_Data, pos.base(), new_size);
+				std::cout << new_size << std::endl;
+				constructRange(new_start + new_size, new_start + new_size + count, value, new_size);
+				constructRange(new_start + new_size, pos.base(), _end, new_size);
 
 				deAllocate();
 				m_Data = new_start;
-				m_Size = new_m_size;
-				m_Capacity = new_size;
+				m_Size = new_size;
+				m_Capacity = new_cap;
 			}
 		}
 	}
