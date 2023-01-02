@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 22:11:55 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 22:12:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ public:
 		m_Size = std::distance(first, last);
 		m_Capacity = m_Size;
 		m_Data = m_Allocator.allocate(m_Capacity);
-		for (size_type i = ; i < m_Size; i++)
+		for (size_type i = 0; i < m_Size; i++)
 			m_Allocator.construct(&m_Data[i], *(first + i));
 	}
 
