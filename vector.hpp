@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 21:00:31 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/02 21:03:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -505,9 +505,9 @@ public:
 
 	void	swap(vector &other)
 	{
-		std::swap(m_Capacity, other.m_Capacity);
 		std::swap(m_Data, other.m_Data);
 		std::swap(m_Size, other.m_Size);
+		std::swap(m_Capacity, other.m_Capacity);
 		std::swap(m_Allocator, other.m_Allocator);
 	}
 
