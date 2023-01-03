@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   bst_iterator.hpp                                   :+:      :+:    :+:   */
+/*   OLD_bst_iterator.hpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 17:58:37 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/29 17:13:17 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/03 16:25:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BST_ITERATOR_HPP
-# define BST_ITERATOR_HPP
+#ifndef OLD_BST_ITERATOR_HPP
+# define OLD_BST_ITERATOR_HPP
 
 # include <cstddef> // BUNU EN SON SİL
 # ifndef nullptr
 #  define nullptr NULL
 # endif
 
-# include "binary_search_tree.hpp"
+# include "OLD_binary_search_tree.hpp"
 
 namespace ft
 {

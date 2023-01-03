@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/02 21:39:30 by marvin           ###   ########.fr       */
+/*   Updated: 2023/01/03 15:42:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,70 +240,36 @@ void vector_test()
 
 void	custom_test()
 {
-	ft::vector<int>		vector;
+	ft::map<int, int>		mp;
 	std::vector<int>	v;
 
-	int _ratio = 10000;
+	int _ratio = 1000;
 
-    vector.assign(1100 * _ratio, 11);
-    ft::vector<int> tmp(500 * _ratio, 5), tmp2(1000 * _ratio, 10), tmp3(1500 * _ratio, 15), tmp4(3000 * _ratio, 30);
-    v.push_back(vector[2]);
-    v.push_back(vector.size());
-    v.push_back(vector.capacity());
-    long *adr1 = reinterpret_cast<long *>(&vector);
-    long *adr2 = reinterpret_cast<long *>(&tmp);
-    vector.swap(tmp);
-    if (reinterpret_cast<long *>(&vector) == adr1 && reinterpret_cast<long *>(&tmp) == adr2)
-    	v.push_back(1);
-    v.push_back(vector[2]);
-    v.push_back(vector.size());
-    v.push_back(vector.capacity());
-    vector.swap(tmp3);
-    v.push_back(vector[2]);
-    v.push_back(vector.size());
-    v.push_back(vector.capacity());
-    std::swap(vector, tmp2);
-    v.push_back(vector[2]);
-    v.push_back(vector.size());
-    v.push_back(vector.capacity());
-    std::swap(vector, tmp4);
-    v.push_back(vector[2]);
-    v.push_back(vector.size());
-    v.push_back(vector.capacity());
+    for (int i = 0, j = 10; i < 70 * _ratio; ++i, ++j)
+        mp.insert(ft::make_pair(i, j));
+    try {
+        v.push_back(mp.at(40 * _ratio));
+        v.push_back(mp.at(40 * _ratio + 1));
+    } catch (std::exception &e) {
+        v.push_back(1);
+    }
 
 	for (auto it = v.begin(); it != v.end(); it++)
 		std::cout << *it << std::endl;
 
 	std::cout << std::endl;
 
-	std::vector<int>	vvector;
+	std::map<int, int>	mmp;
 	std::vector<int>	vv;
 
-	vvector.assign(1100 * _ratio, 11);
-    std::vector<int> ttmp(500 * _ratio, 5), ttmp2(1000 * _ratio, 10), ttmp3(1500 * _ratio, 15), ttmp4(3000 * _ratio, 30);
-    vv.push_back(vvector[2]);
-    vv.push_back(vvector.size());
-    vv.push_back(vvector.capacity());
-    long *aadr1 = reinterpret_cast<long *>(&vvector);
-    long *aadr2 = reinterpret_cast<long *>(&ttmp);
-    vvector.swap(ttmp);
-    if (reinterpret_cast<long *>(&vvector) == aadr1 && reinterpret_cast<long *>(&ttmp) == aadr2)
-    	vv.push_back(1);
-    vv.push_back(vvector[2]);
-    vv.push_back(vvector.size());
-    vv.push_back(vvector.capacity());
-    vvector.swap(ttmp3);
-    vv.push_back(vvector[2]);
-    vv.push_back(vvector.size());
-    vv.push_back(vvector.capacity());
-    std::swap(vvector, ttmp2);
-    vv.push_back(vvector[2]);
-    vv.push_back(vvector.size());
-    vv.push_back(vvector.capacity());
-    std::swap(vvector, ttmp4);
-    vv.push_back(vvector[2]);
-    vv.push_back(vvector.size());
-    vv.push_back(vvector.capacity());
+	for (int i = 0, j = 10; i < 70 * _ratio; ++i, ++j)
+        mmp.insert(std::make_pair(i, j));
+    try {
+        vv.push_back(mmp.at(40 * _ratio));
+        vv.push_back(mmp.at(40 * _ratio + 1));
+    } catch (std::exception &e) {
+        vv.push_back(1);
+    }
 
 	for (auto it = vv.begin(); it != vv.end(); it++)
 		std::cout << *it << std::endl;
