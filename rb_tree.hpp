@@ -38,13 +38,13 @@ public:
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
+    node_pointer        m_Root;
     allocator_type      m_Value_Allocator;
     node_allocator      m_Node_Allocator;
     value_compare       m_Compare;
-    node_pointer        m_Root;
+    size_type           m_Size;
     node_pointer        m_End;
     node_pointer        m_Nil;
-    size_type           m_Size;
 
 /* --------------- CONSTRUCTORS AND DESTRUCTOR --------------- */
 public:
