@@ -439,7 +439,7 @@ public:
         return (iterator(res));
     }
 
-    const_iterator    find(const value_type &value)
+    const_iterator    find(const value_type &value) const
     {
         node_pointer res = search(value, m_Root);
         if (res == nullptr)
@@ -632,7 +632,7 @@ public:
         return (last);
     }
 
-    const_iterator    lower_bound(const value_type &value)
+    const_iterator    lower_bound(const value_type &value) const
     {
        const_iterator last = end();
         for (const_iterator first = begin(); first != last; first++)
@@ -654,7 +654,7 @@ public:
         return (last);
     }
 
-    const_iterator upper_bound(const value_type& value)
+    const_iterator upper_bound(const value_type& value) const
     {
         const_iterator last = end();
         for (const_iterator first = begin(); first != last; first++)
