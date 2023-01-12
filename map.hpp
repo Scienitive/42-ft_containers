@@ -130,40 +130,40 @@ public:
 		return (m_Data.begin());
 	}
 
-	const_iterator	begin() const
+	/*const_iterator	begin() const
 	{
 		return (m_Data.begin());
-	}
+	}*/
 
 	iterator	end()
 	{
 		return(m_Data.end());
 	}
 
-	const_iterator	end() const
+	/*const_iterator	end() const
 	{
 		return(m_Data.end());
-	}
+	}*/
 
 	reverse_iterator	rbegin()
 	{
 		return (m_Data.rbegin());
 	}
 
-	const_reverse_iterator	rbegin() const
+	/*const_reverse_iterator	rbegin() const
 	{
 		return (m_Data.rbegin());
-	}
+	}*/
 
 	reverse_iterator	rend()
 	{
 		return (m_Data.rend());
 	}
 
-	const_reverse_iterator	rend() const
+	/*const_reverse_iterator	rend() const
 	{
 		return (m_Data.rend());
-	}
+	}*/
 
 	void	clear()
 	{
