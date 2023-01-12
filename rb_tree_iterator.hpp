@@ -145,7 +145,7 @@ public:
     rb_tree_iterator    operator++(int)
     {
         rb_tree_iterator temp = *this;
-        ++this;
+        this->operator++();
         return (temp);
     }
 
@@ -169,7 +169,7 @@ public:
     rb_tree_iterator    operator--(int)
     {
         rb_tree_iterator temp = *this;
-        --this;
+        this->operator--();
         return (temp);
     }
 };

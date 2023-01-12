@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/09 15:58:06 by alyasar          ###   ########.fr       */
+/*   Updated: 2023/01/12 19:58:44 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,39 +240,17 @@ void vector_test()
 
 void	custom_test()
 {
-	ft::map<int, int>		mp;
-	std::vector<int>	v;
+	ft::map<int, int> m;
 
-	int _ratio = 1000;
+	m[1] = 1;
+	m[2] = 2;
+	m[3] = 3;
+	m[4] = 4;
+	m[5] = 5;
 
-    for (int i = 0, j = 10; i < 70 * _ratio; ++i, ++j)
-        mp.insert(ft::make_pair(i, j));
-    try {
-        v.push_back(mp.at(40 * _ratio));
-        v.push_back(mp.at(40 * _ratio + 1));
-    } catch (std::exception &e) {
-        v.push_back(1);
-    }
+	ft::map<int, int>::iterator it = m.upper_bound(2);
 
-	for (auto it = v.begin(); it != v.end(); it++)
-		std::cout << *it << std::endl;
-
-	std::cout << std::endl;
-
-	std::map<int, int>	mmp;
-	std::vector<int>	vv;
-
-	for (int i = 0, j = 10; i < 70 * _ratio; ++i, ++j)
-        mmp.insert(std::make_pair(i, j));
-    try {
-        vv.push_back(mmp.at(40 * _ratio));
-        vv.push_back(mmp.at(40 * _ratio + 1));
-    } catch (std::exception &e) {
-        vv.push_back(1);
-    }
-
-	for (auto it = vv.begin(); it != vv.end(); it++)
-		std::cout << *it << std::endl;
+	std::cout << it->first << std::endl;
 }
 
 int main()
