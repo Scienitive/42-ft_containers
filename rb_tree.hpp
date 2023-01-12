@@ -8,45 +8,12 @@
 
 # include <memory>
 # include "utils.hpp"
+# include "type_traits"
 # include "pair.hpp"
+# include "rb_tree_iterator.hpp"
 
-template<typename T>
-struct rbt_node
+namespace ft
 {
-/* --------------- TYPEDEFS --------------- */
-	typedef T		    value_type;
-    typedef rbt_node *  pointer;   
-
-/* --------------- MEMBER ATTRIBUTES --------------- */
-	value_type  *value;
-    pointer     parent;
-    pointer     left;
-    pointer     right;
-    bool        is_black;
-    bool        is_nil;
-
-/* --------------- CONSTRUCTORS --------------- */
-	rbt_node(value_type *val = 0)
-		:	value(val), parent(nullptr), left(nullptr), right(nullptr), is_black(false), is_nil(false)
-	{
-	}
-
-	rbt_node(const rbt_node &other)
-		:	value(other.val), parent(other.parent), left(other.left), right(other.right), is_black(other.is_black), is_nil(other.is_nil)
-	{
-	}
-
-    rbt_node &operator=(const rbt_node &other)
-    {
-        value = other.value;
-        parent = other.parent;
-        left = other.left;
-        right = other.right;
-        is_black = other.is_black;
-        is_nil = other.is_nil;
-        return (*this);
-    }
-};
 
 template<class T, class Compare = std::less<T>, class Alloc = std::allocator<T> >
 class rb_tree
@@ -64,6 +31,10 @@ public:
     typedef typename allocator_type::const_pointer                  const_pointer;
     typedef typename allocator_type::size_type                      size_type;
     typedef typename allocator_type::difference_type                difference_type;
+    typedef rb_tree_iterator<T>                                     iterator;
+    typedef rb_tree_iterator<const T>                               const_iterator;
+    typedef ft::reverse_iterator<iterator>                          reverse_iterator;
+    typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
@@ -82,6 +53,60 @@ public:
     {
         init_end_and_nil();
         m_Root = m_End;
+    }
+
+    rb_tree(const value_compare &comp, const allocator_type &alloc = allocator_type())
+        :   m_Root(nullptr), m_Value_Allocator(alloc), m_Node_Allocator(node_allocator()), m_Compare(comp), m_Size(0)
+    {
+        init_end_and_nil();
+        m_Root = m_End;
+    }
+
+    template<class InputIt>
+    rb_tree(InputIt first, typename ft::enable_if<!ft::is_integral<InputIt>::value, InputIt>::type last, const value_compare &comp = value_compare(), const allocator_type &alloc = allocator_type())
+        :   m_Root(nullptr), m_Value_Allocator(alloc), m_Node_Allocator(node_allocator()), m_Compare(comp), m_Size(0)
+    {
+        init_end_and_nil();
+        m_Root = m_End;
+        for (; first != last; first++)
+            insert(*first);
+    }
+
+    rb_tree(const rb_tree &other)
+        :   m_Root(nullptr), m_Compare(other.m_Compare)
+    {
+        *this = other;
+    }
+
+    rb_tree &operator=(const rb_tree &src)
+    {
+        if (this == &src)
+            return (*this);
+        m_Node_Allocator = src.m_Node_Allocator;
+        m_Value_Allocator = src.m_Value_Allocator;
+        m_Compare = src.m_Compare;
+        if (m_Root == nullptr)
+            init_end_and_nil();
+        else
+            clear_node(m_Root);
+        if (src.m_Size == 0)
+            m_Root = m_End;
+        else
+        {
+            m_Root = copy_node(src.m_Root);
+            copy_child_nodes(m_Root, src.m_Root);
+        }
+        m_Size = src.m_Size;
+        return (*this);
+    }
+
+    ~rb_tree()
+    {
+        clear_node(m_Root);
+        m_Value_Allocator.destroy(m_End->value);
+        m_Value_Allocator.deallocate(m_End->value, 1);
+        m_Node_Allocator.deallocate(m_Nil, 1);
+        m_Node_Allocator.deallocate(m_End, 1);
     }
 
 /* --------------- PRIVATE MEMBER FUNCTIONS --------------- */
@@ -334,6 +359,76 @@ private:
         m_End->parent = node;
     }
 
+    void    erase_fixup(node_pointer x)
+    {
+        node_pointer brother;
+        while (x != m_Root && x->is_black)
+        {
+            if (x == x->parent->left)
+            {
+                brother = x->parent->right;
+                if (!brother->is_black)
+                {
+                    brother->is_black = true;
+                    x->parent->is_black = false;
+                    rotate_left(x->parent);
+                    brother = x->parent->right;
+                }
+                if (brother->left->is_black && brother->right->is_black)
+                {
+                    brother->is_black = false;
+                    x = x->parent;
+                }
+                else
+                {
+                    if (brother->right->is_black)
+                    {
+                        brother->left->is_black = true;
+                        brother->is_black = false;
+                        rotate_right(brother);
+                        brother = x->parent->right;
+                    }
+                    brother->is_black = x->parent->is_black;
+                    x->parent->is_black = true;
+                    brother->right->is_black = true;
+                    rotate_left(x->parent);
+                    x = m_Root;
+                }
+            }
+            else
+            {
+                brother = x->parent->left;
+                if (!brother->is_black)
+                {
+                    brother->is_black = true;
+                    x->parent->is_black = false;
+                    rotate_right(x->parent);
+                    brother = x->parent->left;
+                }
+                if (brother->right->is_black && brother->left->is_black)
+                {
+                    brother->is_black = false;
+                    x = x->parent;
+                }
+                else
+                {
+                    if (brother->left->is_black)
+                    {
+                        brother->right->is_black = true;
+                        brother->is_black = false;
+                        rotate_left(brother);
+                        brother = x->parent->left;
+                    }
+                    brother->is_black = x->parent->is_black;
+                    x->parent->is_black = true;
+                    brother->left->is_black = true;
+                    rotate_right(x->parent);
+                    x = m_Root;
+                }
+            }
+        }
+    }
+
 /* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
 public:
     iterator    find(const value_type &value)
@@ -380,6 +475,230 @@ public:
         for (; first != last; first++)
             insert(*first);
     }
+
+    void erase(iterator pos)
+    {
+        node_pointer x;
+        node_pointer y = pos.node();
+        node_pointer for_free = y;
+        bool is_y_black = y->is_black;
+
+        if (is_nil(y->left))
+        {
+            x = y->right;
+            transplant(y, y->right);
+        }
+        else if (is_nil(y->right))
+        {
+            x = y->left;
+            transplant(y, y->left);
+        }
+        else
+        {
+            node_pointer z = y;
+            y = tree_min(z->right);
+            is_y_black = y->is_black;
+            x = y->right;
+            if (y->parent != z)
+            {
+                transplant(y, y->right);
+                y->right = z->right;
+                z->right->parent = y;
+            }
+            transplant(z, y);
+            y->left = z->left;
+            y->left->parent = y;
+            y->is_black = z->is_black;
+        }
+        free_node(for_free);
+        if (is_y_black)
+            erase_fixup();
+        m_Size--;
+        m_Nil->parent = nullptr;
+        if (m_Size == 0)
+            m_Root = m_End;
+        else
+        {
+            if (m_Size != 1)
+                x = tree_max(m_Root);
+            else
+                x = m_Root;
+            x->right = m_End;
+            m_End->parent = x;
+        }
+    }
+
+    size_type   erase(const value_type &value)
+    {
+        node_pointer res = search(value, m_Root);
+        if (res)
+            erase(iterator(res));
+        return (res != nullptr);
+    }
+
+    void    erase(iterator first, iterator last)
+    {
+        while (first != last)
+            erase(first++);
+    }
+
+    iterator    begin()
+    {
+        if (m_Size == 0)
+            return (iterator(m_End));
+        else
+            return (iterator(tree_min(m_Root)));
+    }
+
+    const_iterator    begin() const
+    {
+        if (m_Size == 0)
+            return (const_iterator(m_End));
+        else
+            return (const_iterator(tree_min(m_Root)));
+    }
+
+    iterator    end()
+    {
+        return(iterator(m_End));
+    }
+
+    const_iterator    end() const
+    {
+        return(const_iterator(m_End));
+    }
+
+    reverse_iterator    rbegin()
+    {
+        return (reverse_iterator(end()));
+    }
+
+    const_reverse_iterator    rbegin() const
+    {
+        return (const_reverse_iterator(end()));
+    }
+
+    reverse_iterator    rend()
+    {
+        return (reverse_iterator(begin()));
+    }
+
+    const_reverse_iterator    rend() const
+    {
+        return (const_reverse_iterator(begin()));
+    }
+
+    size_type   size() const
+    {
+        return (m_Size);
+    }
+
+    size_type   max_size() const
+    {
+        return (m_Value_Allocator.max_size());
+    }
+
+    bool    empty() const
+    {
+        return (m_Size == 0);
+    }
+
+    value_compare   value_comp() const
+    {
+        return (m_Compare);
+    }
+
+    void    clear()
+    {
+        clear_node(m_Root);
+        m_Root = m_End;
+        m_End->parent = nullptr;
+        m_Size = 0;
+    }
+
+    size_type   count(const value_type &value)
+    {
+        return (find(value) != end());
+    }
+
+    iterator    lower_bound(const value_type &value)
+    {
+        iterator last = end();
+        for (iterator first = begin(); first != last; first++)
+        {
+            if (!m_Compare(*first, value))
+                return (first);
+        }
+        return (last);
+    }
+
+    const_iterator    lower_bound(const value_type &value)
+    {
+       const_iterator last = end();
+        for (const_iterator first = begin(); first != last; first++)
+        {
+            if (!m_Compare(*first, value))
+                return (first);
+        }
+        return (last);
+    }
+
+    iterator upper_bound(const value_type& value)
+    {
+        iterator last = end();
+        for (iterator first = begin(); first != last; first++)
+        {
+            if(m_Compare(value, *first))
+                return (first);
+        }
+        return (last);
+    }
+
+    const_iterator upper_bound(const value_type& value)
+    {
+        const_iterator last = end();
+        for (const_iterator first = begin(); first != last; first++)
+        {
+            if(m_Compare(value, *first))
+                return (first);
+        }
+        return (last);
+    }
+
+    ft::pair<iterator, iterator>    equal_range(const value_type &value)
+    {
+        return (ft::make_pair(lower_bound(value), upper_bound(value)));
+    }
+
+    allocator_type  get_allocator() const
+    {
+        return (m_Value_Allocator);
+    }
+
+    void    swap(rb_tree &other)
+    {
+        std::swap(m_Root, other.m_Root);
+        std::swap(m_Nil, other.m_Nil);
+        std::swap(m_End, other.m_End);
+        std::swap(m_Size, other.m_Size);
+        std::swap(m_Node_Allocator, other.m_Node_Allocator);
+        std::swap(m_Value_Allocator, other.m_Value_Allocator);
+        std::swap(m_Compare, other.m_Compare);
+    }
 };
+
+template<class T, class Compare, class Alloc>
+bool    operator<(const rb_tree<T, Compare, Alloc> &lhs, const rb_tree<T, Compare, Alloc> &rhs)
+{
+    return (ft::lexicographcial_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+}
+
+template<class T, class Compare, class Alloc>
+bool    operator==(const rb_tree<T, Compare, Alloc> &lhs, const rb_tree<T, Compare, Alloc> &rhs)
+{
+    return (lhs.size() == rhs.size() && ft::equal(lhs.begin(), lhs.end(), rhs.begin()));
+}
+
+}
 
 #endif
