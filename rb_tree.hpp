@@ -541,18 +541,20 @@ public:
 
     iterator    begin()
     {
-        if (m_Size == 0)
+        /*if (m_Size == 0)
             return (iterator(m_End));
         else
-            return (iterator(tree_min(m_Root)));
+            return (iterator(tree_min(m_Root)));*/
+        return (iterator(m_Size == 0 ? m_End : iterator(tree_min(m_Root))));
     }
 
     const_iterator    begin() const
     {
-        if (m_Size == 0)
+        /*if (m_Size == 0)
             return (const_iterator(m_End));
         else
-            return (const_iterator(tree_min(m_Root)));
+            return (const_iterator(tree_min(m_Root)));*/
+        return (const_iterator(m_Size == 0 ? m_End : const_iterator(tree_min(m_Root))));
     }
 
     iterator    end()
