@@ -83,13 +83,13 @@ public:
 	}
 
 	explicit map(const key_compare &comp, const allocator_type &alloc = allocator_type())
-		:	m_Allocator(alloc), m_Compare(comp), m_Data(alloc, comp)
+		:	m_Allocator(alloc), m_Compare(comp), m_Data(comp, alloc)
 	{
 	}
 
 	template<class InputIt>
 	map(InputIt first, InputIt last, const key_compare &comp = key_compare(), const allocator_type &alloc = allocator_type())
-		:	m_Allocator(alloc), m_Compare(comp), m_Data(first, last, alloc, comp)
+		:	m_Allocator(alloc), m_Compare(comp), m_Data(first, last, comp, alloc)
 	{
 	}
 

@@ -302,54 +302,51 @@ private:
         while (node != m_Root && !node->parent->is_black)
         {
             if (node->parent == node->parent->parent->left)
-                insert_fixup_2(node, true);
-            else
-                insert_fixup_2(node, false);
-        }
-
-        m_Root->is_black = true;
-    }
-
-    void    insert_fixup_2(node_pointer node, bool rotate_to_right)
-    {
-        node_pointer uncle;
-        void (*main_rotate)(node_pointer);
-        void (*second_rotate)(node_pointer);
-        node_pointer left_or_right;
-
-        if (rotate_to_right)
-        {
-            uncle = node->parent->parent->right;
-            main_rotate = rotate_right;
-            second_rotate = rotate_left;
-            left_or_right = node->parent->right;
-        }
-        else
-        {
-            uncle = node->parent->parent->left;
-            main_rotate = rotate_left;
-            second_rotate = rotate_right;
-            left_or_right = node->parent->left;
-        }
-
-        if (!uncle->is_black)
-        {
-            node->parent->is_black = true;
-            uncle->is_black = true;
-            node->parent->parent->is_black = false;
-            node = node->parent->parent;
-        }
-        else
-        {
-            if (node == left_or_right)
             {
-                node = node->parent;
-                second_rotate(node);
+                node_pointer uncle = node->parent->parent->right;
+                if (!uncle->is_black)
+                {
+                    node->parent->is_black = true;
+                    uncle->is_black = true;
+                    node->parent->parent->is_black = false;
+                    node = node->parent->parent;
+                }
+                else
+                {
+                    if (node == node->parent->right)
+                    {
+                        node = node->parent;
+                        rotate_left(node);
+                    }
+                    node->parent->is_black = true;
+                    node->parent->parent->is_black = false;
+                    rotate_right(node->parent->parent);
+                }
             }
-            node->parent->is_black = true;
-            node->parent->parent->is_black = false;
-            main_rotate(node->parent->parent);
+            else
+            {
+                node_pointer uncle = node->parent->parent->left;
+                if (!uncle->is_black)
+                {
+                    node->parent->is_black = true;
+                    uncle->is_black = true;
+                    node->parent->parent->is_black = false;
+                    node = node->parent->parent;
+                }
+                else
+                {
+                    if (node == node->parent->left)
+                    {
+                        node = node->parent;
+                        rotate_right(node);
+                    }
+                    node->parent->is_black = true;
+                    node->parent->parent->is_black = false;
+                    rotate_left(node->parent->parent);
+                }
+            }
         }
+        m_Root->is_black = true;
     }
 
     void    fix_end_node()
