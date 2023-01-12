@@ -40,7 +40,7 @@ struct rbt_node
 	}
 
 	rbt_node(const rbt_node &other)
-		:	value(other.val), parent(other.parent), left(other.left), right(other.right), is_black(other.is_black), is_nil(other.is_nil)
+		:	value(other.value), parent(other.parent), left(other.left), right(other.right), is_black(other.is_black), is_nil(other.is_nil)
 	{
 	}
 

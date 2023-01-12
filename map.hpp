@@ -203,12 +203,27 @@ public:
 		return (m_Data.lower_bound(ft::make_pair(key, mapped_type())));
 	}
 
+	const_iterator	lower_bound(const key_type &key) const
+	{
+		return (m_Data.lower_bound(ft::make_pair(key, mapped_type())));
+	}
+
 	iterator	upper_bound(const key_type &key)
 	{
 		return (m_Data.upper_bound(ft::make_pair(key, mapped_type())));
 	}
 
+	const_iterator	upper_bound(const key_type &key) const
+	{
+		return (m_Data.upper_bound(ft::make_pair(key, mapped_type())));
+	}
+
 	ft::pair<iterator, iterator>	equal_range(const key_type &key)
+	{
+		return (m_Data.equal_range(ft::make_pair(key, mapped_type())));
+	}
+
+	ft::pair<const_iterator, const_iterator>	equal_range(const key_type &key) const
 	{
 		return (m_Data.equal_range(ft::make_pair(key, mapped_type())));
 	}
