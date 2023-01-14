@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef RB_TREE_ITERATOR_HPP
-# define RB_TREE ITERATOR_HPP
+#ifndef OLD_RB_TREE_ITERATOR_HPP
+# define OLD_RB_TREE ITERATOR_HPP
 
 # include "iterator.hpp"
 
@@ -56,21 +56,17 @@ struct rbt_node
     }
 };
 
-template<typename T, typename Diff>
-class const_rb_tree_iterator;
-
-template<typename T, typename Diff>
+template<typename T>
 class rb_tree_iterator
 {
 /* --------------- TYPEDEFS --------------- */
 public:
-    typedef T                                        value_type;
-    typedef T &                                      reference;
-    typedef T *                                      pointer;
-    typedef Diff                                     difference_type;
-    typedef std::bidirectional_iterator_tag          iterator_category;
-    typedef rbt_node<T> *                            node_pointer;
-    typedef const_rb_tree_iterator<T, Diff>          const_iterator;
+    typedef typename ft::iterator_traits<T*>::value_type        value_type;
+    typedef typename ft::iterator_traits<T*>::reference         reference;
+    typedef typename ft::iterator_traits<T*>::pointer           pointer;
+    typedef typename ft::iterator_traits<T*>::difference_type   difference_type;
+    typedef std::bidirectional_iterator_tag                     iterator_category;
+    typedef rbt_node<T> *                                       node_pointer;
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
@@ -176,40 +172,31 @@ public:
         this->operator--();
         return (temp);
     }
-
-    bool operator==(const rb_tree_iterator &other) const
-    {
-        return (m_Node == other.m_Node);
-    }
-
-    bool operator==(const const_iterator &other) const
-    {
-        return (m_Node == other.node());
-    }
-
-    bool operator!=(const rb_tree_iterator &other) const
-    {
-        return (!(*this == other));
-    }
-
-    bool operator!=(const const_iterator &other) const
-    {
-        return (!(*this == other));
-    }
 };
 
-template<typename T, typename Diff>
+template<typename A, typename B>
+bool    operator==(const rb_tree_iterator<A> &lhs, const rb_tree_iterator<B> &rhs)
+{
+    return (lhs.node() == rhs.node());
+}
+
+template<typename A, typename B>
+bool    operator!=(const rb_tree_iterator<A> &lhs, const rb_tree_iterator<B> &rhs)
+{
+    return (lhs.node() != rhs.node());
+}
+
+template<typename T>
 class const_rb_tree_iterator
 {
 /* --------------- TYPEDEFS --------------- */
 public:
-    typedef T                                                   value_type;
-    typedef const T &                                           reference;
-    typedef const T *                                           pointer;
-    typedef Diff                                                difference_type;
+    typedef typename ft::iterator_traits<T*>::value_type        value_type;
+    typedef typename ft::iterator_traits<const T*>::reference   reference;
+    typedef typename ft::iterator_traits<const T*>::pointer     pointer;
+    typedef typename ft::iterator_traits<T*>::difference_type   difference_type;
     typedef std::bidirectional_iterator_tag                     iterator_category;
-    typedef rbt_node<T> *                                       node_pointer;
-    typedef rb_tree_iterator<T, Diff>                           normal_iterator;
+    typedef rbt_node<T> *                                       node_pointer; // şurası bi dursun
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
 private:
@@ -227,7 +214,7 @@ public:
     {
     }
 
-    const_rb_tree_iterator(normal_iterator it)
+    const_rb_tree_iterator(const rb_tree_iterator<T> &it)
         :   m_Node(it.node())
     {
     }
@@ -320,27 +307,19 @@ public:
         this->operator--();
         return (temp);
     }
-
-    bool operator==(const const_rb_tree_iterator &other) const
-    {
-        return (m_Node == other.m_Node);
-    }
-
-    bool operator==(const normal_iterator &other) const
-    {
-        return (m_Node == other.node());
-    }
-
-    bool operator!=(const const_rb_tree_iterator &other) const
-    {
-        return (!(*this == other));
-    }
-
-    bool operator!=(const normal_iterator &other) const
-    {
-        return (!(*this == other));
-    }
 };
+
+template<typename A, typename B>
+bool    operator==(const const_rb_tree_iterator<A> &lhs, const const_rb_tree_iterator<B> &rhs)
+{
+    return (lhs.node() == rhs.node());
+}
+
+template<typename A, typename B>
+bool    operator!=(const const_rb_tree_iterator<A> &lhs, const const_rb_tree_iterator<B> &rhs)
+{
+    return (lhs.node() != rhs.node());
+}
 
 }
 
