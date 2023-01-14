@@ -669,6 +669,11 @@ public:
         return (ft::make_pair(lower_bound(value), upper_bound(value)));
     }
 
+    ft::pair<const_iterator, const_iterator>    equal_range(const value_type &value) const
+    {
+        return (ft::make_pair(lower_bound(value), upper_bound(value)));
+    }
+
     allocator_type  get_allocator() const
     {
         return (m_Value_Allocator);
