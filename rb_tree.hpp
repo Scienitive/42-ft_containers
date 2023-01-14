@@ -32,7 +32,7 @@ public:
     typedef typename allocator_type::size_type                      size_type;
     typedef typename allocator_type::difference_type                difference_type;
     typedef rb_tree_iterator<T>                                     iterator;
-    typedef rb_tree_iterator<const T>                               const_iterator;
+    typedef const_rb_tree_iterator<T>                               const_iterator;
     typedef ft::reverse_iterator<iterator>                          reverse_iterator;
     typedef ft::reverse_iterator<const_iterator>                    const_reverse_iterator;
 

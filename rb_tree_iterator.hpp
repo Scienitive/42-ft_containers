@@ -186,6 +186,141 @@ bool    operator!=(const rb_tree_iterator<A> &lhs, const rb_tree_iterator<B> &rh
     return (lhs.node() != rhs.node());
 }
 
+template<typename T>
+class const_rb_tree_iterator
+{
+/* --------------- TYPEDEFS --------------- */
+public:
+    typedef typename ft::iterator_traits<T*>::value_type        value_type;
+    typedef typename ft::iterator_traits<const T*>::reference   reference;
+    typedef typename ft::iterator_traits<const T*>::pointer     pointer;
+    typedef typename ft::iterator_traits<T*>::difference_type   difference_type;
+    typedef std::bidirectional_iterator_tag                     iterator_category;
+    typedef rbt_node<T> *                                       node_pointer; // şurası bi dursun
+
+/* --------------- MEMBER ATTRIBUTES --------------- */
+private:
+    node_pointer    m_Node;
+
+/* --------------- CONSTRUCTORS AND DESTRUCTOR --------------- */
+public:
+    const_rb_tree_iterator()
+        :   m_Node(nullptr)
+    {
+    }
+
+    const_rb_tree_iterator(node_pointer node)
+        :   m_Node(node)
+    {
+    }
+
+    const_rb_tree_iterator(const rb_tree_iterator<T> &it)
+        :   m_Node(it.node())
+    {
+    }
+
+    const_rb_tree_iterator &operator=(const const_rb_tree_iterator &other)
+    {
+        m_Node = other.node();
+        return (*this);
+    }
+
+/* --------------- PRIVATE MEMBER FUNCTIONS --------------- */
+private:
+    node_pointer    tree_min(node_pointer n) const
+    {
+        while(n->left != nullptr && !n->left->is_nil)
+            n = n->left;
+        return (n);
+    }
+
+    node_pointer    tree_max(node_pointer n) const
+    {
+        while(!n->right->is_nil)
+            n = n->right;
+        return (n);
+    }
+
+/* --------------- PUBLIC MEMBER FUNCTIONS --------------- */
+public:
+    node_pointer    node() const
+    {
+        return (m_Node);
+    }
+
+/* --------------- OPERATION OVERLOADS --------------- */
+public:
+    reference   operator*() const
+    {
+        return (*(m_Node->value));
+    }
+
+    pointer     operator->() const
+    {
+        return (m_Node->value);
+    }
+
+    const_rb_tree_iterator    &operator++()
+    {
+        if (m_Node->right && !m_Node->right->is_nil)
+            m_Node = tree_min(m_Node->right);
+        else
+        {
+            node_pointer y = m_Node->parent;
+            while (y != nullptr && m_Node == y->right)
+            {
+                m_Node = y;
+                y = y->parent;
+            }
+            m_Node = y;
+        }
+        return (*this);
+    }
+
+    const_rb_tree_iterator    operator++(int)
+    {
+        rb_tree_iterator temp = *this;
+        this->operator++();
+        return (temp);
+    }
+
+    const_rb_tree_iterator    &operator--()
+    {
+        if (m_Node->left && !m_Node->left->is_nil)
+            m_Node = tree_max(m_Node->left);
+        else
+        {
+            node_pointer y = m_Node->parent;
+            while (y != nullptr && m_Node == y->left)
+            {
+                m_Node = y;
+                y = y->parent;
+            }
+            m_Node = y;
+        }
+        return (*this);
+    }
+
+    const_rb_tree_iterator    operator--(int)
+    {
+        rb_tree_iterator temp = *this;
+        this->operator--();
+        return (temp);
+    }
+};
+
+template<typename A, typename B>
+bool    operator==(const const_rb_tree_iterator<A> &lhs, const const_rb_tree_iterator<B> &rhs)
+{
+    return (lhs.node() == rhs.node());
+}
+
+template<typename A, typename B>
+bool    operator!=(const const_rb_tree_iterator<A> &lhs, const const_rb_tree_iterator<B> &rhs)
+{
+    return (lhs.node() != rhs.node());
+}
+
 }
 
 #endif

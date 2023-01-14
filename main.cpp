@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/12 19:58:44 by alyasar          ###   ########.fr       */
+/*   Updated: 2023/01/14 14:55:08 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -240,6 +240,16 @@ void vector_test()
 
 void	custom_test()
 {
+	
+	std::map<int, int> sm;
+
+	
+	sm[1] = 1;
+	sm[2] = 2;
+	sm[3] = 3;
+	sm[4] = 4;
+	sm[5] = 5;
+
 	ft::map<int, int> m;
 
 	m[1] = 1;
@@ -248,9 +258,12 @@ void	custom_test()
 	m[4] = 4;
 	m[5] = 5;
 
-	ft::map<int, int>::iterator it = m.upper_bound(2);
+	ft::map<int, int>::const_iterator it = m.upper_bound(2);
+	
+	std::map<int, int>::const_iterator sit = sm.upper_bound(2);
 
 	std::cout << it->first << std::endl;
+	std::cout << sit->first << std::endl;
 }
 
 int main()
