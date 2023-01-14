@@ -16,6 +16,7 @@
 # include "rb_tree.hpp"
 # include "type_traits.hpp"
 
+
 namespace ft
 {
 
@@ -206,7 +207,17 @@ public:
 		return (m_Data.find(ft::make_pair(key, mapped_type())));
 	}
 
+	const_iterator	find(const Key &key) const
+	{
+		return (m_Data.find(ft::make_pair(key, mapped_type())));
+	}
+
 	size_type	count(const Key &key)
+	{
+		return (m_Data.count(ft::make_pair(key, mapped_type())));
+	}
+
+	size_type	count(const Key &key) const
 	{
 		return (m_Data.count(ft::make_pair(key, mapped_type())));
 	}

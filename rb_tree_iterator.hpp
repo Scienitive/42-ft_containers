@@ -26,21 +26,22 @@ struct rbt_node
     typedef rbt_node *  pointer;   
 
 /* --------------- MEMBER ATTRIBUTES --------------- */
+    bool        is_black;
+    bool        is_nil;
+
 	value_type  *value;
     pointer     parent;
     pointer     left;
     pointer     right;
-    bool        is_black;
-    bool        is_nil;
 
 /* --------------- CONSTRUCTORS --------------- */
 	rbt_node(value_type *val = 0)
-		:	value(val), parent(nullptr), left(nullptr), right(nullptr), is_black(false), is_nil(false)
+		:	is_black(false), is_nil(false), value(val), parent(nullptr), left(nullptr), right(nullptr)
 	{
 	}
 
 	rbt_node(const rbt_node &other)
-		:	value(other.value), parent(other.parent), left(other.left), right(other.right), is_black(other.is_black), is_nil(other.is_nil)
+		:	is_black(other.is_black), is_nil(other.is_nil), value(other.value), parent(other.parent), left(other.left), right(other.right)
 	{
 	}
 

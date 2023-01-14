@@ -18,6 +18,8 @@
 #include <map>
 #include "map.hpp"
 
+#include "pair.hpp"
+
 #include <iomanip>
 #include <chrono> // C++11
 
@@ -238,32 +240,40 @@ void vector_test()
 		std::cout << "\nconst_iterator and iterator is comparable.\n";
 }
 
+template <typename T>
+std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::cout)
+{
+	o << "key: " << iterator->first << " | value: " << iterator->second;
+	if (nl)
+		o << std::endl;
+	return ("");
+}
+
+void	printSize(std::map<int, int> const &mp, bool print_content = 1)
+{
+	std::cout << "size: " << mp.size() << std::endl;
+	std::cout << "max_size: " << mp.max_size() << std::endl;
+	if (print_content)
+	{
+		typename std::map<int, int>::const_iterator it = mp.begin(), ite = mp.end();
+		std::cout << std::endl << "Content is:" << std::endl;
+		for (; it != ite; ++it)
+			std::cout << "- " << printPair(it, false) << std::endl;
+	}
+	std::cout << "###############################################" << std::endl;
+}
+
+
 void	custom_test()
 {
-	
-	std::map<int, int> sm;
-
-	
-	sm[1] = 1;
-	sm[2] = 2;
-	sm[3] = 3;
-	sm[4] = 4;
-	sm[5] = 5;
-
-	ft::map<int, int> m;
+	ft::map<int, int>	m;
+	std::map<int, int>	sm;
 
 	m[1] = 1;
-	m[2] = 2;
-	m[3] = 3;
-	m[4] = 4;
-	m[5] = 5;
+	sm[1] = 1;
 
-	ft::map<int, int>::const_iterator it = m.upper_bound(2);
-	
-	std::map<int, int>::const_iterator sit = sm.upper_bound(2);
-
-	std::cout << it->first << std::endl;
-	std::cout << sit->first << std::endl;
+	std::cout << m.max_size() << std::endl;
+	std::cout << sm.max_size() << std::endl;
 }
 
 int main()

@@ -463,7 +463,7 @@ public:
     iterator    insert(iterator position, const value_type &value) // BURASI OLMAZSA HALLEDERİZ
     {
         (void)position;
-        insert(value);
+        return (insert(value).first);
     }
 
     template<class InputIt>
@@ -509,7 +509,7 @@ public:
         }
         free_node(for_free);
         if (is_y_black)
-            erase_fixup();
+            erase_fixup(x);
         m_Size--;
         m_Nil->parent = nullptr;
         if (m_Size == 0)
@@ -616,6 +616,11 @@ public:
     }
 
     size_type   count(const value_type &value)
+    {
+        return (find(value) != end());
+    }
+
+    size_type   count(const value_type &value) const
     {
         return (find(value) != end());
     }
