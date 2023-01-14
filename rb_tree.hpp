@@ -594,7 +594,7 @@ public:
 
     size_type   max_size() const
     {
-        return (m_Value_Allocator.max_size());
+        return (m_Node_Allocator.max_size());
     }
 
     bool    empty() const
