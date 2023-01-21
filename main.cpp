@@ -249,13 +249,13 @@ std::string	printPair(const T &iterator, bool nl = true, std::ostream &o = std::
 	return ("");
 }
 
-void	printSize(std::map<int, int> const &mp, bool print_content = 1)
+void	printSize(ft::map<int, std::string> const &mp, bool print_content = 1)
 {
 	std::cout << "size: " << mp.size() << std::endl;
 	std::cout << "max_size: " << mp.max_size() << std::endl;
 	if (print_content)
 	{
-		typename std::map<int, int>::const_iterator it = mp.begin(), ite = mp.end();
+		typename ft::map<int, std::string>::const_iterator it = mp.begin(), ite = mp.end();
 		std::cout << std::endl << "Content is:" << std::endl;
 		for (; it != ite; ++it)
 			std::cout << "- " << printPair(it, false) << std::endl;
@@ -263,22 +263,62 @@ void	printSize(std::map<int, int> const &mp, bool print_content = 1)
 	std::cout << "###############################################" << std::endl;
 }
 
+static int iter = 0;
+
+template<typename U, typename V>
+void	ft_erase(ft::map<int, std::string> &mp, U param, V param2)
+{
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	mp.erase(param, param2);
+	printSize(mp);
+}
+
+template<typename U>
+void	ft_erase(ft::map<int, std::string> &mp, U param)
+{
+	std::cout << "\t-- [" << iter++ << "] --" << std::endl;
+	mp.erase(param);
+	printSize(mp);
+}
 
 void	custom_test()
 {
-	ft::map<int, int>	m;
-	std::map<int, int>	sm;
+	std::list<ft::pair<const int, std::string>> lst;
+	unsigned int lst_size = 10;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(ft::make_pair(i, std::string((lst_size - i), i + 65)));
+	ft::map<int, std::string> mp(lst.begin(), lst.end());
+	printSize(mp);
 
-	m[1] = 1;
-	sm[1] = 1;
-
-	std::cout << m.max_size() << std::endl;
-	std::cout << sm.max_size() << std::endl;
+	ft_erase(mp, ++mp.begin());
 }
 
 int main()
 {
-	custom_test();
+	/*std::list<ft::pair<const int, std::string>> lst;
+	unsigned int lst_size = 10;
+	for (unsigned int i = 0; i < lst_size; ++i)
+		lst.push_back(ft::make_pair(i, std::string((lst_size - i), i + 65)));
+	ft::map<int, std::string> mp(lst.begin(), lst.end());*/
+
+	ft::map<int, std::string> mp;
+
+	mp[0] = "AAAAAAAAAA";
+	mp[1] = "BBBBBBBBB";
+	mp[2] = "CCCCCCCC";
+	mp[3] = "DDDDDDD";
+	mp[4] = "EEEEEE";
+	mp[5] = "FFFFF";
+	mp[6] = "GGGG";
+	mp[7] = "HHH";
+	mp[8] = "II";
+	mp[9] = "J";
+
+	std::cout << mp.begin()->second << std::endl;
+	std::cout << (++mp.begin())->second << std::endl << std::endl;
+
+	mp.erase(++mp.begin());
+	//custom_test();
 	//vector_test();
 }
 

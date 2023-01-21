@@ -222,7 +222,7 @@ public:
 		return (m_Data.count(ft::make_pair(key, mapped_type())));
 	}
 
-	void	swap(const map &other)
+	void	swap(map &other)
 	{
 		std::swap(m_Allocator, other.m_Allocator);
 		std::swap(m_Compare, other.m_Compare);

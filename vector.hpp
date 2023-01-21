@@ -100,7 +100,7 @@ public:
 		m_Capacity = m_Size;
 		m_Data = m_Allocator.allocate(m_Capacity);
 		for (size_type i = 0; i < m_Size; i++)
-			m_Allocator.construct(&m_Data[i], *(first + i));
+			m_Allocator.construct(&m_Data[i], *(first++));
 	}
 
 	vector	&operator=(const vector &rhs)

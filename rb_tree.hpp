@@ -2,6 +2,7 @@
 # define RB_TREE_HPP
 
 # include <cstddef> // BUNU EN SON SİL
+# include <iostream> // BUNU EN SON SİL
 # ifndef nullptr
 #  define nullptr NULL
 # endif
@@ -359,8 +360,10 @@ private:
     void    erase_fixup(node_pointer x)
     {
         node_pointer brother;
-        while (x != m_Root && x->is_black)
+        while (x != m_Root && x != m_Nil && x->is_black)
         {
+            std::cout << x << std::endl;
+            std::cout << x->parent << std::endl;
             if (x == x->parent->left)
             {
                 brother = x->parent->right;
