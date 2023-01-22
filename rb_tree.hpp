@@ -362,8 +362,6 @@ private:
         node_pointer brother;
         while (x != m_Root && x != m_Nil && x->is_black)
         {
-            std::cout << x << std::endl;
-            std::cout << x->parent << std::endl;
             if (x == x->parent->left)
             {
                 brother = x->parent->right;
