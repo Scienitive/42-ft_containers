@@ -628,24 +628,36 @@ public:
 
     iterator    lower_bound(const value_type &value)
     {
-        iterator last = end();
+        /*iterator last = end();
         for (iterator first = begin(); first != last; first++)
         {
             if (!m_Compare(*first, value))
                 return (first);
         }
-        return (last);
+        return (last);*/
+
+        iterator beg = begin();
+        iterator end = end();
+
+        while (beg != end)
+        {
+            if (!m_Compare((*beg).first, value))
+                break;
+            beg++;
+        }
+        return (beg);
     }
 
     const_iterator    lower_bound(const value_type &value) const
     {
-       const_iterator last = end();
+       /*const_iterator last = end();
         for (const_iterator first = begin(); first != last; first++)
         {
             if (!m_Compare(*first, value))
                 return (first);
         }
-        return (last);
+        return (last);*/
+        return (const_iterator(lower_bound(value)));
     }
 
     iterator upper_bound(const value_type& value)
