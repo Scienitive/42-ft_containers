@@ -628,14 +628,6 @@ public:
 
     iterator    lower_bound(const value_type &value)
     {
-        /*iterator last = end();
-        for (iterator first = begin(); first != last; first++)
-        {
-            if (!m_Compare(*first, value))
-                return (first);
-        }
-        return (last);*/
-
         node_pointer node = m_Root;
         node_pointer pos = m_End;
 
@@ -653,19 +645,10 @@ public:
         }
 
         return (iterator(pos));
-        
     }
 
     const_iterator    lower_bound(const value_type &value) const
     {
-       /*const_iterator last = end();
-        for (const_iterator first = begin(); first != last; first++)
-        {
-            if (!m_Compare(*first, value))
-                return (first);
-        }
-        return (last);*/
-
         node_pointer node = m_Root;
         node_pointer pos = m_End;
 
@@ -687,24 +670,44 @@ public:
 
     iterator upper_bound(const value_type& value)
     {
-        iterator last = end();
-        for (iterator first = begin(); first != last; first++)
+        node_pointer node = m_Root;
+        node_pointer pos = m_End;
+
+        while (!is_nil(node))
         {
-            if(m_Compare(value, *first))
-                return (first);
+            if (m_Compare(value, *(node->value)))
+            {
+                pos = node;
+                node = node->left;
+            }
+            else
+            {
+                node = node->right;
+            }
         }
-        return (last);
+
+        return (iterator(pos));
     }
 
     const_iterator upper_bound(const value_type& value) const
     {
-        const_iterator last = end();
-        for (const_iterator first = begin(); first != last; first++)
+        node_pointer node = m_Root;
+        node_pointer pos = m_End;
+
+        while (!is_nil(node))
         {
-            if(m_Compare(value, *first))
-                return (first);
+            if (m_Compare(value, *(node->value)))
+            {
+                pos = node;
+                node = node->left;
+            }
+            else
+            {
+                node = node->right;
+            }
         }
-        return (last);
+
+        return (const_iterator(pos));
     }
 
     ft::pair<iterator, iterator>    equal_range(const value_type &value)
