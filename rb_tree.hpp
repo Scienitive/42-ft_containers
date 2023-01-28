@@ -636,16 +636,24 @@ public:
         }
         return (last);*/
 
-        iterator beg = begin();
-        iterator last = end();
+        node_pointer node = m_Root;
+        node_pointer pos = m_End;
 
-        while (beg != last)
+        while (!is_nil(node))
         {
-            if (!m_Compare(*beg, value))
-                break;
-            beg++;
+            if (!m_Compare(*(node->value), value))
+            {
+                pos = node;
+                node = node->left;
+            }
+            else
+            {
+                node = node->right;
+            }
         }
-        return (beg);
+
+        return (iterator(pos));
+        
     }
 
     const_iterator    lower_bound(const value_type &value) const
@@ -657,7 +665,24 @@ public:
                 return (first);
         }
         return (last);*/
-        return (const_iterator(lower_bound(value)));
+
+        node_pointer node = m_Root;
+        node_pointer pos = m_End;
+
+        while (!is_nil(node))
+        {
+            if (!m_Compare(*(node->value), value))
+            {
+                pos = node;
+                node = node->left;
+            }
+            else
+            {
+                node = node->right;
+            }
+        }
+
+        return (const_iterator(pos));
     }
 
     iterator upper_bound(const value_type& value)
