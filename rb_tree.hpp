@@ -637,11 +637,11 @@ public:
         return (last);*/
 
         iterator beg = begin();
-        iterator end = end();
+        iterator last = end();
 
-        while (beg != end)
+        while (beg != last)
         {
-            if (!m_Compare((*beg).first, value))
+            if (!m_Compare(*beg, value))
                 break;
             beg++;
         }

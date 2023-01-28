@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/03 14:52:08 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/14 14:55:08 by alyasar          ###   ########.fr       */
+/*   Updated: 2023/01/28 21:16:08 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -314,10 +314,13 @@ int main()
 	mp[8] = "II";
 	mp[9] = "J";
 
-	std::cout << mp.begin()->second << std::endl;
+	std::cout << (mp.lower_bound(5))->first;
+	std::cout << (mp.upper_bound(3))->first;
+	/*std::cout << mp.begin()->second << std::endl;
 	std::cout << (++mp.begin())->second << std::endl << std::endl;
 
-	mp.erase(++mp.begin());
+	mp.erase(++mp.begin());*/
+
 	//custom_test();
 	//vector_test();
 }
