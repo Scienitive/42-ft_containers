@@ -8,8 +8,8 @@
 # endif
 
 # include <memory>
-# include "utils.hpp"
-# include "type_traits.hpp"
+# include "utility.hpp"
+//# include "type_traits.hpp"
 # include "pair.hpp"
 # include "rb_tree_iterator.hpp"
 
@@ -740,7 +740,7 @@ public:
 template<class T, class Compare, class Alloc>
 bool    operator<(const rb_tree<T, Compare, Alloc> &lhs, const rb_tree<T, Compare, Alloc> &rhs)
 {
-    return (ft::lexicographcial_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+    return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template<class T, class Compare, class Alloc>

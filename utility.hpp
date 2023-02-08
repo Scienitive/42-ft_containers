@@ -1,27 +1,144 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   iterator.hpp                                       :+:      :+:    :+:   */
+/*   utility.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/29 18:11:44 by alyasar           #+#    #+#             */
-/*   Updated: 2022/12/29 17:13:16 by marvin           ###   ########.fr       */
+/*   Created: 2022/12/07 00:35:22 by alyasar           #+#    #+#             */
+/*   Updated: 2023/01/31 16:34:56 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ITERATOR_HPP
-# define ITERATOR_HPP
-
-# include <cstddef> // BUNU EN SON SİL
-# ifndef nullptr
-#  define nullptr NULL
-# endif
-
-# include <iterator>
+#ifndef UTILITY_HPP
+# define UTILITY_HPP
 
 namespace ft
 {
+
+template<class InputIt1, class InputIt2>
+bool	equal(InputIt1 first1, InputIt1 last1, InputIt2 first2)
+{
+	for (; first1 != last1; first1++, first2++)
+	{
+		if (*first1 != *first2)
+			return (false);
+	}
+	return (true);
+}
+
+template<class InputIt1, class InputIt2, class BinaryPredicate>
+bool	equal(InputIt1 first1, InputIt1 last1, InputIt2 first2, BinaryPredicate p)
+{
+	for (; first1 != last1; first1++, first2++)
+	{
+		if (!p(*first1, *first2))
+			return (false);
+	}
+	return (true);
+}
+
+template<class InputIt1, class InputIt2>
+bool	lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2)
+{
+	for (; (first1 != last1) && (first2 != last2); first1++, first2++)
+	{
+		if (*first1 < *first2)
+			return (true);
+		if (*first2 < *first1)
+			return (false);
+	}
+
+	return ((first1 == last1) && (first2 != last2));
+}
+
+template<class InputIt1, class InputIt2, class Compare>
+bool	lexicographical_compare(InputIt1 first1, InputIt1 last1, InputIt2 first2, InputIt2 last2, Compare comp)
+{
+	for (; (first1 != last1) && (first2 != last2); first1++, first2++)
+	{
+		if (comp(*first1, *first2))
+			return (true);
+		if (comp(*first2, *first1))
+			return (false);
+	}
+
+	return ((first1 == last1) && (first2 != last2));
+}
+
+template<bool B, typename T = void>
+struct enable_if
+{
+};
+
+template<typename T>
+struct enable_if<true, T>
+{
+	typedef T	type;
+};
+
+
+template<typename T, T v>
+struct integral_constant
+{
+	typedef T						value_type;
+	typedef integral_constant		type;
+
+	static const value_type value = v;
+
+	operator value_type() const
+	{
+		return value;
+	}
+};
+
+typedef integral_constant<bool, true>	true_type;
+typedef integral_constant<bool, false>	false_type;
+
+template<typename>
+struct is_integral : public false_type {};
+
+template<>
+struct is_integral<bool> : public true_type {};
+
+template<>
+struct is_integral<char> : public true_type {};
+
+template<>
+struct is_integral<signed char> : public true_type {};
+
+template<>
+struct is_integral<unsigned char> : public true_type {};
+
+template<>
+struct is_integral<wchar_t> : public true_type {};
+
+template<>
+struct is_integral<char16_t> : public true_type {};
+
+template<>
+struct is_integral<short int> : public true_type {};
+
+template<>
+struct is_integral<int> : public true_type {};
+
+template<>
+struct is_integral<long int> : public true_type {};
+
+template<>
+struct is_integral<long long> : public true_type {};
+
+template<>
+struct is_integral<unsigned short int> : public true_type {};
+
+template<>
+struct is_integral<unsigned int> : public true_type {};
+
+template<>
+struct is_integral<unsigned long int> : public true_type {};
+
+template<>
+struct is_integral<unsigned long long> : public true_type {};
 
 template<typename T>
 struct iterator_traits

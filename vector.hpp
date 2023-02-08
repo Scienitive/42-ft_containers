@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/09 15:58:08 by alyasar          ###   ########.fr       */
+/*   Updated: 2023/01/31 16:16:26 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@
 # include <limits>
 # include <stdexcept>
 # include "vector_iterator.hpp"
-# include "type_traits.hpp"
-# include "utils.hpp"
+//# include "type_traits.hpp"
+# include "utility.hpp"
 
 namespace ft
 {
@@ -554,7 +554,7 @@ bool	operator!=(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 template<typename T, typename Alloc>
 bool	operator<(const vector<T, Alloc> &lhs, const vector<T, Alloc> &rhs)
 {
-	return (ft::lexicographcial_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
+	return (ft::lexicographical_compare(lhs.begin(), lhs.end(), rhs.begin(), rhs.end()));
 }
 
 template<typename T, typename Alloc>
