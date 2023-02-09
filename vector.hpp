@@ -6,15 +6,13 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:10:03 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/31 16:16:26 by alyasar          ###   ########.fr       */
+/*   Updated: 2023/02/09 15:31:49 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef VECTOR_HPP
 # define VECTOR_HPP
 
-# include <cstddef> // BUNU EN SON SİL
-# include <iostream> // BUNU DA
 # ifndef nullptr
 #  define nullptr NULL
 # endif
@@ -23,7 +21,6 @@
 # include <limits>
 # include <stdexcept>
 # include "vector_iterator.hpp"
-//# include "type_traits.hpp"
 # include "utility.hpp"
 
 namespace ft
@@ -92,10 +89,6 @@ public:
 	vector(InputIt first, typename enable_if<!is_integral<InputIt>::value, InputIt>::type last, const Alloc &alloc = Alloc())
 		:	m_Capacity(0), m_Data(nullptr), m_Size(0), m_Allocator(alloc)
 	{
-		/*m_Data = m_Allocator.allocate(m_Capacity);
-		for (; first != last; first++)
-			push_back(*first);*/
-
 		m_Size = std::distance(first, last);
 		m_Capacity = m_Size;
 		m_Data = m_Allocator.allocate(m_Capacity);
@@ -157,7 +150,7 @@ private:
 			throw std::length_error("Exception: New capacity can't be higher than max_size.");
 	}
 
-	void	destroyFromEnd(pointer pos)
+	void	destroyToEnd(pointer pos)
 	{
 		int	i = 0;
 
@@ -176,7 +169,6 @@ private:
 		if (max - cap < extra)
 			throw std::length_error("Exception.");
 
-		// kapasite max / 2 den buyukse cap * 2 maxi gecicegi icin max i donduruyorum
 		if (cap >= max / 2) {
 			return max;
 		}
@@ -373,7 +365,7 @@ public:
 					std::copy_backward(pos.base(), old_end - count, old_end);
 					std::fill_n(pos, count, value);
 				}
-				else
+				else // BU KISIM ???????????
 				{
 					constructRange(_end, _end + (count - elems_after), value, m_Size);
 					constructRange(_end, pos.base(), old_end, m_Size);
@@ -401,19 +393,6 @@ public:
 	template<class InputIt>
 	void	insert(iterator pos, InputIt first, typename enable_if<!is_integral<InputIt>::value, InputIt>::type last)
 	{
-		/*if (first == last)
-			return;
-		else if (static_cast<size_type>(std::distance(first, last)) <= 0)
-			throw std::length_error("Exception: Range is not valid.");
-
-		size_type dist = pos - begin();
-		size_type range = static_cast<size_type>(std::distance(first, last));
-		size_type old_size = m_Size;
-
-		resize(m_Size + range);
-		std::copy_backward(m_Data + dist, m_Data + old_size, m_Data + old_size + range);
-		std::copy(first, last, m_Data + dist);*/
-
 		size_type start = pos - begin();
 		size_type count = std::distance(first, last);
 		if (m_Size + count > m_Capacity)
@@ -508,7 +487,7 @@ public:
 		if (count > len)
 			insert(end(), count - len, value);
 		else if (count < len)
-			destroyFromEnd(m_Data + count);
+			destroyToEnd(m_Data + count);
 	}
 
 	void	swap(vector &other)

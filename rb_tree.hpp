@@ -1,15 +1,12 @@
 #ifndef RB_TREE_HPP
 # define RB_TREE_HPP
 
-# include <cstddef> // BUNU EN SON SİL
-# include <iostream> // BUNU EN SON SİL
 # ifndef nullptr
 #  define nullptr NULL
 # endif
 
 # include <memory>
 # include "utility.hpp"
-//# include "type_traits.hpp"
 # include "pair.hpp"
 # include "rb_tree_iterator.hpp"
 

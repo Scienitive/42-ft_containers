@@ -6,7 +6,7 @@
 /*   By: alyasar <alyasar@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/07 00:35:22 by alyasar           #+#    #+#             */
-/*   Updated: 2023/01/31 16:34:56 by alyasar          ###   ########.fr       */
+/*   Updated: 2023/02/09 14:58:59 by alyasar          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -212,13 +212,6 @@ public:
 	{
 	}
 
-	reverse_iterator &operator=(const reverse_iterator &other)
-	{
-		if (this != &other)
-			m_Iterator = other.m_Iterator;
-		return (*this);
-	}
-
 	~reverse_iterator()
 	{
 	}
@@ -232,8 +225,7 @@ public:
 
 /* --------------- OPERATION OVERLOADS --------------- */
 public:
-	template<typename T>
-	reverse_iterator	&operator=(const reverse_iterator<T> &other)
+	reverse_iterator	&operator=(const reverse_iterator &other)
 	{
 		m_Iterator = other.base();
 

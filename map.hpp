@@ -14,8 +14,6 @@
 # define MAP_HPP
 
 # include "rb_tree.hpp"
-//# include "type_traits.hpp"
-
 
 namespace ft
 {
