@@ -357,19 +357,18 @@ public:
 			if (m_Capacity - m_Size >= count)
 			{
 				size_type elems_after = end() - pos;
-				pointer old_end = _end;
 
 				if (elems_after > count)
 				{
 					constructRange(_end, _end - count, _end, m_Size);
-					std::copy_backward(pos.base(), old_end - count, old_end);
+					std::copy_backward(pos.base(), _end - count, _end);
 					std::fill_n(pos, count, value);
 				}
-				else // BU KISIM ???????????
+				else
 				{
-					constructRange(_end, _end + (count - elems_after), value, m_Size);
-					constructRange(_end, pos.base(), old_end, m_Size);
-					std::fill(pos.base(), old_end, value);
+					constructRange(_end, _end + count - elems_after, value_type(), m_Size);
+					constructRange(_end + count - elems_after, pos.base(), _end, m_Size);
+					std::fill(pos.base(), _end + count - elems_after, value);
 				}
 			}
 			else
@@ -393,46 +392,56 @@ public:
 	template<class InputIt>
 	void	insert(iterator pos, InputIt first, typename enable_if<!is_integral<InputIt>::value, InputIt>::type last)
 	{
-		size_type start = pos - begin();
+		pointer _end = m_Data + m_Size;
 		size_type count = std::distance(first, last);
-		if (m_Size + count > m_Capacity)
+
+		if (count != 0)
 		{
-			size_type new_cap = calculate_growth(count);
-			pointer new_start = m_Allocator.allocate(new_cap);
-			std::uninitialized_copy(begin(), pos, iterator(new_start));
-			try
+			if (m_Capacity - m_Size >= count)
 			{
-				for (size_type i = 0; i < count; i++, first++)
-					m_Allocator.construct(new_start + start + i, *first);
+				size_type elems_after = end() - pos;
+
+				if (elems_after > count)
+				{
+					constructRange(_end, _end - count, _end, m_Size);
+					std::copy_backward(pos.base(), _end - count, _end);
+					std::copy(first, last, pos);
+				}
+				else
+				{
+					constructRange(_end, _end + count - elems_after, value_type(), m_Size);
+					constructRange(_end + count - elems_after, pos.base(), _end, m_Size);
+					std::copy(first, last, pos);
+				}
 			}
-			catch (...)
+			else
 			{
-				for (size_type i = 0; i < count + start; i++)
-					m_Allocator.destroy(new_start + i);
-				m_Allocator.deallocate(new_start, new_cap);
-				throw;
+				size_type new_cap = calculate_growth(count);
+				pointer new_start = m_Allocator.allocate(new_cap);
+				size_type new_size = 0;
+
+				constructRange(new_start, m_Data, pos.base(), new_size);
+				try
+				{
+					size_type i = 0;
+					for (; i < count; i++, first++)
+						m_Allocator.construct(new_start + new_size + i, *first);
+					new_size += i;
+				}
+				catch (...)
+				{
+					for (size_type i = 0; i < count + new_size; i++)
+						m_Allocator.destroy(new_start + i);
+					m_Allocator.deallocate(new_start, new_cap);
+					throw;
+				}
+				constructRange(new_start + new_size, pos.base(), _end, new_size);
+
+				deAllocate();
+				m_Data = new_start;
+				m_Size = new_size;
+				m_Capacity = new_cap;
 			}
-			std::uninitialized_copy(pos, end(), iterator(new_start + start + count));
-			for(size_type i = 0; i < m_Size; i++)
-				m_Allocator.destroy(m_Data + i);
-			m_Allocator.deallocate(m_Data, m_Capacity);
-			m_Size += count;
-			m_Capacity = new_cap;
-			m_Data = new_start;
-		}
-		else
-		{
-			for (size_type i = m_Size; i > start; i--)
-			{
-				m_Allocator.destroy(m_Data + i + count - 1);
-				m_Allocator.construct(m_Data + i + count - 1, *(m_Data + i - 1));
-			}
-			for (size_type i = 0; i < count; i++, first++)
-			{
-				m_Allocator.destroy(m_Data + i + count);
-				m_Allocator.construct(m_Data + start + i, *first);
-			}
-			m_Size += count;
 		}
 	}
 

@@ -204,6 +204,7 @@ void vector_test()
 int main()
 {
 	ft::vector<int> vec;
+	ft::vector<int> vec2;
 
 	vec.push_back(1);
 	vec.push_back(2);
@@ -211,10 +212,47 @@ int main()
 	vec.push_back(4);
 	vec.push_back(5);
 	vec.push_back(6);
-	vec.reserve(30);
-	vec.insert(vec.begin() + 2, 7, 9);
+
+	vec2.push_back(10);
+	vec2.push_back(20);
+	vec2.push_back(30);
+	vec2.push_back(40);
+	vec2.push_back(50);
+	vec2.push_back(60);
+	vec2.push_back(70);
+
+	vec.reserve(10);
+	vec.insert(vec.begin() + 2, vec2.begin(), vec2.begin() + 3);
+	vec.resize(1, 52);
 
 	for (auto it = vec.begin(); it != vec.end(); it++)
-		std::cout << *it << std::endl;
+		std::cout << *it << " ";
+
+	std::cout << std::endl;
+
+	std::vector<int> svec;
+	std::vector<int> svec2;
+
+	svec.push_back(1);
+	svec.push_back(2);
+	svec.push_back(3);
+	svec.push_back(4);
+	svec.push_back(5);
+	svec.push_back(6);
+
+	svec2.push_back(10);
+	svec2.push_back(20);
+	svec2.push_back(30);
+	svec2.push_back(40);
+	svec2.push_back(50);
+	svec2.push_back(60);
+	svec2.push_back(70);
+
+	svec.reserve(10);
+	svec.insert(svec.begin() + 2, svec2.begin(), svec2.begin() + 3);
+	svec.resize(1, 52);
+
+	for (auto it = svec.begin(); it != svec.end(); it++)
+		std::cout << *it << " ";
 }
 
